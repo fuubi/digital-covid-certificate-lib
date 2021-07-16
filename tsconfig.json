@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
+    "esModuleInterop": true,
     "declaration": true,
     "incremental": true,
     "inlineSources": true,
