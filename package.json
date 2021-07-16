@@ -1,0 +1,40 @@
+{
+  "name": "digital-covid-certificate-lib",
+  "version": "0.0.1",
+  "description": "A library to parse and verify Digital Covid Certificates (DCC)",
+  "keywords": [
+    "DCC",
+    "covid",
+    "cert-validation"
+  ],
+  "license": "MIT",
+  "contributors": [
+    "Christian Tschudin",
+    "Fabrizio Parrillo "
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "repository": "git@github.com:cn-uofbasel/digital-covid-certificate-lib.git",
+  "bugs": {
+    "url": "https://github.com/cn-uofbasel/digital-covid-certificate-lib/issues"
+  },
+  "homepage": "https://github.com/cn-uofbasel/digital-covid-certificate-lib#readme",
+  "files": [
+    "config",
+    "dist"
+  ],
+  "scripts": {
+    "build": "npm run build:ts",
+    "build:ts": "tsc",
+    "prepare": "npm run build",
+    "test:unit": "jest --config=./jest.coverage.config.js test/unit",
+    "test:watch": "jest --coverageReporters none --watch test/unit"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "eslint": "^7.16.0",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.1.3"
+  }
+}
