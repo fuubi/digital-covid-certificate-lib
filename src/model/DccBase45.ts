@@ -16,3 +16,7 @@ export class DccBase45 {
     }
 }
 
+
+export type DccZlibCompressed = Buffer
+export type DccCbor = Buffer
+
