@@ -1,9 +1,8 @@
-import {Dcc, DccCose} from "../model/DccBase45";
+import {DccHcert, DccCose, DccHcertFactory} from "../model/DccBase45";
 
 
 export class CoseDecoder {
-    static decode(cert: DccCose): Dcc {
-       return new Dcc(cert)
-
+    static decode(cert: DccCose): DccHcert {
+       return DccHcertFactory.create(cert)
     }
 }
