@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "base45": "^3.0.0",
+    "cbor-web": "^7.0.6",
     "pako": "^2.0.3"
   }
 }
