@@ -5,16 +5,12 @@ describe("Test the base45", ( ) => {
         const base45Cert =  new DccBase45('HC1:0')
         expect(base45Cert).toBeDefined();
         expect(base45Cert.type).toBe('HC1');
-        expect(base45Cert.certificateZlib.equals(new Buffer([0]))).toBeTruthy();
-        expect(base45Cert.certificate).toBe('0');
     })
 
     test("Return the type 1", () =>{
         const base45Cert =  new DccBase45('HC1:aa')
         expect(base45Cert).toBeDefined();
         expect(base45Cert.type).toBe('HC1');
-        expect(base45Cert.certificateZlib.equals(new Buffer([210]))).toBeTruthy();
-        expect(base45Cert.certificate).toBe('aa');
     })
 
     test("Throw an error for unsupported certificate types", () =>{
