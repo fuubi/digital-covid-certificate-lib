@@ -1,6 +1,6 @@
 import * as cbor from "cbor-web";
 import get = Reflect.get;
-
+import {DiseaseValueSet, getDiseaseValueSet} from "../data/DiseaseAgentTargeted";
 const ChPayloadKeys = {
     ISSUER: 1,
     SUBJECT: 2,
@@ -52,9 +52,11 @@ export class DccCert {
     }
 }
 
+
+
 export class DccHcertFactory {
 
-    static create(dccCose: DccCose): DccHcert {
+    static create(dccCose: DccCose): EudccHcert {
         const version = DccHcertFactory.getValue(dccCose)("ver")
         if(version){
             // could later be used to dereference different version, for now we just ignore it
@@ -67,7 +69,7 @@ export class DccHcertFactory {
      * https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf
      * @param dccCose
      */
-    static dereferenceV_1_3_0(dccCose: DccCose): DccHcert{
+    static dereferenceV_1_3_0(dccCose: DccCose): EudccHcert{
         const getMetadataValue = DccHcertFactory.getMetaDataValue(dccCose)
         const getValue = DccHcertFactory.getValue(dccCose)
         /**
@@ -161,7 +163,21 @@ export class DccHcertFactory {
             familyName, familyNameStandardised,
             dateOfBirth
         }
-        return new DccHcert(version, person)
+
+        if(getValue("v")){
+            /**
+            A coded value from the value set
+            disease-agent-targeted.json.
+                This value set has a single entry 840539006, which is the code for COVID-
+                                                                                   19 from SNOMED CT (GPS).
+                Exactly 1 (one) non-empty field MUST be provided.
+                Example:
+            "tg": "840539006"
+             */
+            const disease = getDiseaseValueSet(getValue("v")[0]["tg"], 'en')
+
+            return new EudccHcert(version, person, {disease})
+        }
     }
 
     /**
@@ -205,18 +221,26 @@ export class DccHcertFactory {
 }
 
 
-export class DccHcert {
+export type EudccPerson = {
+    familyName: string,
+    familyNameStandardised: string,
+    givenName:string,
+    givenNameStandardised: string,
+    dateOfBirth: string
+}
+
+export type EudccSpecificInformation =EudccVaccinationGroup // | EudccTestGroup | EudccRecoveryGroup
+
+export type EudccVaccinationGroup = {
+    disease: DiseaseValueSet
+}
+
+export class EudccHcert {
 
     constructor(
         public readonly schemaVersion: string,
-
-        public readonly person: {
-            familyName: string,
-            familyNameStandardised: string,
-            givenName:string,
-            givenNameStandardised: string,
-            dateOfBirth: string
-        }
+        public readonly person: EudccPerson,
+        public readonly infromation: EudccSpecificInformation
     ) {
 
     }

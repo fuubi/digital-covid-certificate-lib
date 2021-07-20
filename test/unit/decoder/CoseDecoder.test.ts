@@ -18,5 +18,11 @@ describe("Test the cose dcoder", ( ) => {
         expect(hcert.person.givenName).toBe("Martina")
         expect(hcert.person.givenNameStandardised).toBe("MARTINA")
         expect(hcert.person.dateOfBirth).toBe("1964-03-14")
+
+        expect(hcert.infromation.disease.active).toBe(true)
+        expect(hcert.infromation.disease.lang).toBe('en')
+        expect(hcert.infromation.disease.display).toBe('COVID-19')
+        expect(hcert.infromation.disease.system).toBe('http://snomed.info/sct')
+        expect(hcert.infromation.disease.version).toBe('http://snomed.info/sct/900000000000207008/version/20210131')
     })
 })
