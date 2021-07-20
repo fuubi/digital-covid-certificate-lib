@@ -20,3 +20,15 @@ export class DccBase45 {
 export type DccZlibCompressed = Buffer
 export type DccCbor = Buffer
 
+export type CoseSignedHeader = Buffer
+export type CoseUnsignedHeader = Buffer
+export type CosePayload = Buffer
+export type CoseSignature = Buffer
+
+export type DccCose = [
+    CoseSignedHeader,
+    CoseUnsignedHeader,
+    CosePayload,
+    CoseSignature
+]
+
