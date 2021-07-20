@@ -91,6 +91,20 @@ export class DccHcertFactory {
         const familyName = getValue("nam")["fn"]
 
         /**
+            Surname(s) of the holder transliterated using the same
+            convention as the one used in the holder’s machine
+            readable travel documents (such as the rules defined in
+            ICAO Doc 9303 Part 3).
+            Exactly 1 (one) non-empty field MUST be provided, only
+            including characters A-Z and <. Maximum length: 80
+            characters (as per ICAO 9303 specification).
+            Examples:
+             "fnt": "MUSTERFRAU<GOESSINGER"
+             "fnt": "MUSTERFRAU<GOESSINGER<MUELLER"
+        */
+        const familyNameStandardised = getValue("nam")["fnt"]
+
+        /**
          * Forename(s), such as given name(s), of the holder.
          If the holder has no forenames, the field MUST be
          skipped.
@@ -102,6 +116,20 @@ export class DccHcertFactory {
          */
         const givenName = getValue("nam")["gn"]
 
+        /**
+        Forename(s) of the holder transliterated using the same
+        convention as the one used in the holder’s machine
+        readable travel documents (such as the rules defined in
+        ICAO Doc 9303 Part 3).
+        If the holder has no forenames, the field MUST be
+        skipped.
+         In all other cases, exactly 1 (one) non-empty field MUST
+        be provided, only including characters A-Z and <.
+        Maximum length: 80 characters.
+            Example:
+            "gnt": "ISOLDE<ERIKA"
+         */
+        const givenNameStandardised = getValue("nam")["gnt"]
 
         /**
          * Date of birth of the DCC holder.
@@ -129,12 +157,29 @@ export class DccHcertFactory {
          */
         const dateOfBirth = getValue("dob")
         const person = {
-            givenName,
-            familyName,
+            givenName, givenNameStandardised,
+            familyName, familyNameStandardised,
             dateOfBirth
         }
         return new DccHcert(version, person)
     }
+
+    /**
+     * A utility function to access the metadata values.
+     *
+     * Metadata (payload as json) internal data model:
+     * {
+     *     1: ...
+     *     2: ...
+     *     -260: ...
+     * }
+     * @param dccCose
+     * @private
+     */
+    private static getMetaDataValue(dccCose: DccCose) {
+        return (key) => dccCose.getPayloadAsJson().get(key)
+    }
+
 
     /**
      * A utility function to access the hcert values.
@@ -156,26 +201,7 @@ export class DccHcertFactory {
     private static getValue(dccCose: DccCose) {
         return (key) => dccCose.getPayloadAsJson().get(ChPayloadKeys.HCERT).get(1)[key]
     }
-    /**
-     * A utility function to access the hcert values.
-     *
-     * Hcert (payload as json) internal data model:
-     * {
-     *     -260: {
-     *         1: {
-     *             v: ...
-     *             dob: ...
-     *             name: ...
-     *             ver: ...
-     *         }
-     *     }
-     * }
-     * @param dccHcert
-     * @private
-     */
-    private static getMetaDataValue(dccCose: DccCose) {
-        return (key) => dccCose.getPayloadAsJson().get(key)
-    }
+
 }
 
 
@@ -186,9 +212,9 @@ export class DccHcert {
 
         public readonly person: {
             familyName: string,
-        //    familyNameStandardised: string,
+            familyNameStandardised: string,
             givenName:string,
-//////////////////            givenNameStandardised: string,
+            givenNameStandardised: string,
             dateOfBirth: string
         }
     ) {

@@ -13,6 +13,10 @@ describe("Test the cose dcoder", ( ) => {
         const hcert = CoseDecoder.decode(dccCose)
 
         expect(hcert.schemaVersion).toBe("1.3.0")
+        expect(hcert.person.familyName).toBe("Studer")
+        expect(hcert.person.familyNameStandardised).toBe("STUDER")
+        expect(hcert.person.givenName).toBe("Martina")
+        expect(hcert.person.givenNameStandardised).toBe("MARTINA")
         expect(hcert.person.dateOfBirth).toBe("1964-03-14")
     })
 })
