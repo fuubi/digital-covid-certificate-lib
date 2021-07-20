@@ -3,6 +3,6 @@ import * as cbor from "cbor-web";
 
 export class CborDecoder {
     static decode(cert: DccCbor): DccCose {
-        return cbor.decode(cert)
+        return new DccCose(cbor.decode(cert))
     }
 }
