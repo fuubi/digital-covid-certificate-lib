@@ -30,5 +30,11 @@ describe("Test the cose dcoder", ( ) => {
         expect(hcert.infromation.vaccineOrProphylaxis.display).toBe('covid-19 vaccines')
         expect(hcert.infromation.vaccineOrProphylaxis.system).toBe('http://snomed.info/sct')
         expect(hcert.infromation.vaccineOrProphylaxis.version).toBe('http://snomed.info/sct/900000000000207008/version/20210131')
+
+        expect(hcert.infromation.vaccineProduct.active).toBe(true)
+        expect(hcert.infromation.vaccineProduct.lang).toBe('en')
+        expect(hcert.infromation.vaccineProduct.display).toBe('COVID-19 Vaccine Janssen')
+        expect(hcert.infromation.vaccineProduct.system).toBe('https://ec.europa.eu/health/documents/community-register/html/')
+        expect(hcert.infromation.vaccineProduct.version).toBe('')
     })
 })

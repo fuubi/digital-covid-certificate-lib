@@ -3,6 +3,7 @@ import get = Reflect.get;
 import { getDiseaseValueSet} from "../data/DiseaseAgentTargeted";
 import {getVaccineProphylaxis} from "../data/VaccineProphylaxis";
 import {ValueSetValue} from "../data/ValueSets";
+import {getVaccineMedicalProduct} from "../data/VaccineMedicalProduct";
 const ChPayloadKeys = {
     ISSUER: 1,
     SUBJECT: 2,
@@ -189,7 +190,22 @@ export class DccHcertFactory {
              "vp": "1119349007" (a SARS-CoV-2 mRNA vaccine)
              */
             const vaccineOrProphylaxis = getVaccineProphylaxis(getValue("v")[0]["vp"], 'en')
-            return new EudccHcert(version, person, {disease, vaccineOrProphylaxis})
+
+            /**
+            Medicinal product used for this specific dose of vaccination. A coded value
+            from the value set
+            vaccine-medicinal-product.json.
+                The value set will be distributed from the EUDCC Gateway starting with the
+                gateway version 1.1.
+                Exactly 1 (one) non-empty field MUST be provided. Example:
+            "mp": "EU/1/20/1528" (Comirnaty)
+            */
+            const vaccineProduct = getVaccineMedicalProduct(getValue("v")[0]["mp"], 'en')
+
+            return new EudccHcert(
+                version,
+                person,
+                {disease, vaccineOrProphylaxis, vaccineProduct})
         }
     }
 
@@ -247,6 +263,7 @@ export type EudccSpecificInformation =EudccVaccinationGroup // | EudccTestGroup 
 export type EudccVaccinationGroup = {
     disease: ValueSetValue,
     vaccineOrProphylaxis: ValueSetValue
+    vaccineProduct: ValueSetValue
 }
 
 export class EudccHcert {
