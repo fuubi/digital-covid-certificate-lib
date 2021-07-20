@@ -1,6 +1,8 @@
 import * as cbor from "cbor-web";
 import get = Reflect.get;
-import {DiseaseValueSet, getDiseaseValueSet} from "../data/DiseaseAgentTargeted";
+import { getDiseaseValueSet} from "../data/DiseaseAgentTargeted";
+import {getVaccineProphylaxis} from "../data/VaccineProphylaxis";
+import {ValueSetValue} from "../data/ValueSets";
 const ChPayloadKeys = {
     ISSUER: 1,
     SUBJECT: 2,
@@ -176,7 +178,18 @@ export class DccHcertFactory {
              */
             const disease = getDiseaseValueSet(getValue("v")[0]["tg"], 'en')
 
-            return new EudccHcert(version, person, {disease})
+            /**
+             Type of the vaccine or prophylaxis used.
+             A coded value from the value set
+             vaccine-prophylaxis.json.
+             The value set will be distributed from the EUDCC Gateway starting with the
+             gateway version 1.1.
+             Exactly 1 (one) non-empty field MUST be provided.
+             Example:
+             "vp": "1119349007" (a SARS-CoV-2 mRNA vaccine)
+             */
+            const vaccineOrProphylaxis = getVaccineProphylaxis(getValue("v")[0]["vp"], 'en')
+            return new EudccHcert(version, person, {disease, vaccineOrProphylaxis})
         }
     }
 
@@ -232,7 +245,8 @@ export type EudccPerson = {
 export type EudccSpecificInformation =EudccVaccinationGroup // | EudccTestGroup | EudccRecoveryGroup
 
 export type EudccVaccinationGroup = {
-    disease: DiseaseValueSet
+    disease: ValueSetValue,
+    vaccineOrProphylaxis: ValueSetValue
 }
 
 export class EudccHcert {

@@ -1,25 +1,12 @@
 // https://raw.githubusercontent.com/ehn-dcc-development/ehn-dcc-valuesets/84268b62f6994e687186b3d5f218839d916a978e/disease-agent-targeted.json
 
-type DiseaseAgentTargeted = {
-  valueSetId: string,
-  valueSetDate: string,
-  valuesSetValues: {
-    "840539006": DiseaseValueSet
-  }
-}
 
-export type DiseaseValueSet = {
-  "display": string,
-  "lang": string,
-  "active": boolean,
-  "version": string,
-  "system": string
-}
+import {ValueSetDocument} from "./ValueSets";
 
-const  diseaseAgentTargeted: DiseaseAgentTargeted = {
+const  diseaseAgentTargeted: ValueSetDocument= {
   "valueSetId": "disease-agent-targeted",
   "valueSetDate": "2021-04-27",
-  "valuesSetValues": {
+  "valueSetValues": {
     "840539006": {
       "display": "COVID-19",
       "lang": "en",
@@ -31,5 +18,5 @@ const  diseaseAgentTargeted: DiseaseAgentTargeted = {
 }
 
 export const getDiseaseValueSet = (code: string, lang: 'en') => {
-  return diseaseAgentTargeted.valuesSetValues[code] as DiseaseValueSet
+  return diseaseAgentTargeted.valueSetValues[code]
 }
