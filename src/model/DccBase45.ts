@@ -4,6 +4,7 @@ import {getValueSetValue, ValueSetValue} from "../data/ValueSets";
 import {VSD_DISEASE_AGENT_TARGETED} from "../data/DiseaseAgentTargeted";
 import {VSD_VACCINE_PROPHYLAXIS} from "../data/VaccineProphylaxis";
 import {VSD_VACCINE_MEDICAL_PRODUCT} from "../data/VaccineMedicalProduct";
+import {VSD_VACCINE_MANUFACTURER} from "../data/VaccineManufacturer";
 const ChPayloadKeys = {
     ISSUER: 1,
     SUBJECT: 2,
@@ -205,11 +206,22 @@ export class DccHcertFactory {
             const vaccineProductId = getValue("v")[0]["mp"]
             const vaccineProduct = getValueSetValue(VSD_VACCINE_MEDICAL_PRODUCT)(vaccineProductId, 'en')
 
+            /**
+             Marketing authorisation holder or manufacturer, if no marketing authorization
+             holder is present. A coded value from the value set
+             vaccine-mah-manf.json.
+             The value set will be distributed from the EUDCC Gateway starting with the
+             gateway version 1.1.
+             Exactly 1 (one) non-empty field MUST be provided. Example:
+             "ma": "ORG-100030215" (Biontech Manufacturing GmbH)
+             */
+            const vaccineManufacturerId = getValue("v")[0]["ma"]
+            const vaccineManufacturer = getValueSetValue(VSD_VACCINE_MANUFACTURER)(vaccineManufacturerId, 'en')
 
             return new EudccHcert(
                 version,
                 person,
-                {disease, vaccineOrProphylaxis, vaccineProduct})
+                {disease, vaccineOrProphylaxis, vaccineProduct, vaccineManufacturer})
         }
     }
 
@@ -268,6 +280,8 @@ export type EudccVaccinationGroup = {
     disease: ValueSetValue,
     vaccineOrProphylaxis: ValueSetValue
     vaccineProduct: ValueSetValue
+    vaccineManufacturer: ValueSetValue
+
 }
 
 export class EudccHcert {

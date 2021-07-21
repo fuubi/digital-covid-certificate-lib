@@ -36,5 +36,11 @@ describe("Test the cose dcoder", ( ) => {
         expect(hcert.infromation.vaccineProduct.display).toBe('COVID-19 Vaccine Janssen')
         expect(hcert.infromation.vaccineProduct.system).toBe('https://ec.europa.eu/health/documents/community-register/html/')
         expect(hcert.infromation.vaccineProduct.version).toBe('')
+
+        expect(hcert.infromation.vaccineManufacturer.active).toBe(true)
+        expect(hcert.infromation.vaccineManufacturer.lang).toBe('en')
+        expect(hcert.infromation.vaccineManufacturer.display).toBe('Janssen-Cilag International')
+        expect(hcert.infromation.vaccineManufacturer.system).toBe('https://spor.ema.europa.eu/v1/organisations')
+        expect(hcert.infromation.vaccineManufacturer.version).toBe('')
     })
 })
