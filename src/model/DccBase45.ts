@@ -5,6 +5,7 @@ import {VSD_DISEASE_AGENT_TARGETED} from "../data/DiseaseAgentTargeted";
 import {VSD_VACCINE_PROPHYLAXIS} from "../data/VaccineProphylaxis";
 import {VSD_VACCINE_MEDICAL_PRODUCT} from "../data/VaccineMedicalProduct";
 import {VSD_VACCINE_MANUFACTURER} from "../data/VaccineManufacturer";
+import {COUNTRY_2_LETTER_ISO3166_CODES} from "../data/Country2LetterISO3166Codes";
 const ChPayloadKeys = {
     ISSUER: 1,
     SUBJECT: 2,
@@ -244,24 +245,34 @@ export class DccHcertFactory {
             const overallDoseNumber = getValue("v")[0]["sd"]
 
             /**
-             Total number of doses (positive integer) in a complete vaccination series
-             according to the used vaccination protocol. The protocol is not in all cases
-             directly defined by the vaccine product, as in some countries only one dose of
-             normally two-dose vaccines is delivered to people recovered from COVID-
-             19. In these cases, the value of the field should be set to 1.
-             Exactly 1 (one) non-empty field MUST be provided.
-             Examples:
-             "sd": "1" (for all 1-dose vaccination schedules)
-             "sd": "2" (for 2-dose vaccination schedules)
-             "sd": "3" (in case of a booster)
+             The date when the described dose was received, in the format YYYY-MM-DD
+             (full date without time). Other formats are not supported.
+             Exactly 1 (one) non-empty field MUST be provided. Example:
+             "dt": "2021-03-28"
              */
             const vaccinationDate = getValue("v")[0]["dt"]
+
+            /**
+             Country expressed as a 2-letter ISO3166 code (RECOMMENDED) or a
+             reference to an international organisation responsible for the vaccination event
+             (such as UNHCR or WHO).  A coded value from the value set
+             country-2-codes.json.
+             The value set will be distributed from the EUDCC Gateway starting
+             with the gateway version 1.1.
+             Exactly 1 (one) field MUST be provided.
+             Example:
+             "co": "CZ"
+             "co": "UNHCR"
+             */
+                // We only handle the 2 letter code.
+            const vaccinationCountry = COUNTRY_2_LETTER_ISO3166_CODES[getValue("v")[0]["co"]]
+
             return new EudccHcert(
                 version,
                 person,
                 {
                     disease, vaccineOrProphylaxis, vaccineProduct, vaccineManufacturer,
-                    doseNumber, overallDoseNumber, vaccinationDate})
+                    doseNumber, overallDoseNumber, vaccinationDate, vaccinationCountry})
         }
     }
 
@@ -323,8 +334,8 @@ export type EudccVaccinationGroup = {
     vaccineManufacturer: ValueSetValue,
     doseNumber: number,
     overallDoseNumber: number,
-    vaccinationDate: string
-
+    vaccinationDate: string,
+    vaccinationCountry: string
 }
 
 export class EudccHcert {
