@@ -276,13 +276,24 @@ export class DccHcertFactory {
              "is": "Vaccination Centre South District 3"             */
             const certificateIssuer = getValue("v")[0]["is"]
 
+            /**
+             Unique certificate identifier (UVCI) as specified in the vaccination-
+             proof_interoperability-guidelines_en.pdf (europa.eu)
+             The inclusion of the checksum is optional. The prefix "URN:UVCI:" may be
+             added.
+             Exactly 1 (one) non-empty field MUST be provided.
+             Examples:
+             "ci": "URN:UVCI:01:NL:187/37512422923"
+             "ci": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B"         */
+            const uniqueCertificateIdentifier = getValue("v")[0]["ci"]
+
             return new EudccHcert(
                 version,
                 person,
                 {
                     disease, vaccineOrProphylaxis, vaccineProduct, vaccineManufacturer,
                     doseNumber, overallDoseNumber, vaccinationDate, vaccinationCountry,
-                    certificateIssuer
+                    certificateIssuer, uniqueCertificateIdentifier
                 })
         }
     }
@@ -339,6 +350,7 @@ export type EudccPerson = {
 export type EudccSpecificInformation =EudccVaccinationGroup // | EudccTestGroup | EudccRecoveryGroup
 
 export type EudccVaccinationGroup = {
+    uniqueCertificateIdentifier: string;
     certificateIssuer: string;
     disease: ValueSetValue,
     vaccineOrProphylaxis: ValueSetValue

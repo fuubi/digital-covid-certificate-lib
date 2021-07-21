@@ -50,5 +50,6 @@ describe("Test the cose dcoder", ( ) => {
         expect(hcert.infromation.vaccinationCountry).toBe("Switzerland")
 
         expect(hcert.infromation.certificateIssuer).toBe("Bundesamt für Gesundheit (BAG)")
+        expect(hcert.infromation.uniqueCertificateIdentifier).toBe("urn:uvci:01:CH:52DBC5C6503016A06162545C")
     })
 })
