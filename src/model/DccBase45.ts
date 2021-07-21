@@ -61,7 +61,7 @@ export class DccCert {
 
 export class DccHcertFactory {
 
-    static create(dccCose: DccCose): EudccHcert {
+    static create(dccCose: DccCose): VaccinationCertificate {
         const version = DccHcertFactory.getValue(dccCose)("ver")
         if(version){
             // could later be used to dereference different version, for now we just ignore it
@@ -74,7 +74,7 @@ export class DccHcertFactory {
      * https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf
      * @param dccCose
      */
-    static dereferenceV_1_3_0(dccCose: DccCose): EudccHcert{
+    static dereferenceV_1_3_0(dccCose: DccCose): VaccinationCertificate{
         const getMetadataValue = DccHcertFactory.getMetaDataValue(dccCose)
         const getValue = DccHcertFactory.getValue(dccCose)
         /**
@@ -171,7 +171,10 @@ export class DccHcertFactory {
 
         if(getValue("v")){
             const groupInformation = DccHcertFactory.getVaccinationGroupInformation(dccCose)
-            return new EudccHcert(version, person, groupInformation)
+            return new VaccinationCertificate(version, person, groupInformation)
+        }
+        else if (getValue("t")){
+
         }
     }
 
@@ -365,18 +368,28 @@ export type EudccVaccinationGroup = {
     vaccinationCountry: string
 }
 
-export class EudccHcert {
+export type EudccTestGroup = {
+}
 
+export abstract class EudccHcert {
+
+    protected constructor(
+        public readonly schemaVersion: string,
+        public readonly person: EudccPerson,
+    ) {}
+}
+
+export class VaccinationCertificate extends EudccHcert{
     constructor(
         public readonly schemaVersion: string,
         public readonly person: EudccPerson,
         public readonly infromation: EudccSpecificInformation
     ) {
-
+        super(schemaVersion, person)
     }
-
-
 }
+
+
 
 
 export class DccCose {
