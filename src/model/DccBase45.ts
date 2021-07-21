@@ -360,18 +360,32 @@ export class DccHcertFactory {
         const disease = getValueSetValue(VSD_DISEASE_AGENT_TARGETED)(diseaseId, 'en')
 
         /**
-         A coded value from the value set
-         disease-agent-targeted.json.
-         This value set has a single entry 840539006, which is the code for COVID-
-         19 from SNOMED CT (GPS).
+         The type of the test used, based on the material targeted by the test. A coded
+         value from the value set
+         test-type.json
+         (based on LOINC). Values outside of the value set are not allowed.
          Exactly 1 (one) non-empty field MUST be provided.
          Example:
-         "tg": "840539006"
+         "tt": "LP6464-4" (Nucleic acid amplification with probe
+         detection)
+         "tt": "LP217198-3" (Rapid immunoassay)
          */
         const testTypeId = testGroup["tt"]
         const testType = getValueSetValue(VSD_TEST_TYPE)(testTypeId, 'en')
 
-        return {disease, testType}
+        /**
+         The name of the nucleic acid amplification test (NAAT) used. The name
+         should include the name of the test manufacturer and the commercial name of
+         the test, separated by a comma.
+         For NAAT: the field is optional.
+         For RAT: the field SHOULD NOT be used, as the name of the test is supplied
+         indirectly through the test device identifier (t/ma).
+         When supplied, the field MUST NOT be empty.
+         Example:
+         "nm": "ELITechGroup, SARS-CoV-2 ELITe MGB® Kit"
+         */
+        const testName = testGroup["nm"]
+        return {disease, testType, testName}
     }
 }
 
@@ -400,6 +414,7 @@ export type EudccVaccinationGroup = {
 }
 
 export type EudccTestGroup = {
+    testName: string;
     testType: ValueSetValue
     disease: ValueSetValue
 }

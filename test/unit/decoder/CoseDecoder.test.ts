@@ -85,6 +85,7 @@ describe("Test the cose dcoder", () => {
             expect(testCert.infromation.testType.system).toBe('http://loinc.org')
             expect(testCert.infromation.testType.version).toBe('2.69')
 
+            expect(testCert.infromation.testName).toBe('PCR')
         }
     })
 })
