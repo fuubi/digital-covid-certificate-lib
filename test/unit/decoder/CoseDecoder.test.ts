@@ -96,6 +96,7 @@ describe("Test the cose dcoder", () => {
             expect(testCert.infromation.testResult.system).toBe('http://snomed.info/sct')
             expect(testCert.infromation.testResult.version).toBe('http://snomed.info/sct/900000000000207008/version/20210131')
 
+            expect(testCert.infromation.testingCentre).toBe("Testcenter")
 
         }
     })

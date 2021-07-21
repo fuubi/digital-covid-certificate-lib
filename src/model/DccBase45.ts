@@ -1,5 +1,4 @@
 import * as cbor from "cbor-web";
-import get = Reflect.get;
 import {getValueSetValue, ValueSetValue} from "../data/ValueSets";
 import {VSD_DISEASE_AGENT_TARGETED} from "../data/DiseaseAgentTargeted";
 import {VSD_VACCINE_PROPHYLAXIS} from "../data/VaccineProphylaxis";
@@ -450,7 +449,20 @@ export class DccHcertFactory {
         const testResultId = testGroup["tr"]
         const testResult = getValueSetValue(VSD_TEST_RESULTS)(testResultId, 'en')
 
-        return {disease, testType, testName, testDevice, testDate, testResult}
+        /**
+         * Name of the actor that conducted the test. Identifiers are allowed as part of the
+         name, but not recommended to be used individually without the name as a
+         text. Max 80 UTF-8 characters. Any extra characters should be truncated. The
+         name is not designed for automated verification.
+         For NAAT tests: exactly 1 (one) non-empty field MUST be provided.
+         For RAT tests: the field is optional. If provided, MUST NOT be empty.
+         Example:
+         "tc": "Test centre west region 245"
+         */
+        const testingCentre = testGroup["tc"]
+
+
+        return {disease, testType, testName, testDevice, testDate, testResult, testingCentre}
     }
 }
 
@@ -491,6 +503,7 @@ export type RapidAntigenTestDevice = {
         }
 
 export type EudccTestGroup = {
+    testingCentre: string;
     testResult: ValueSetValue;
     testDate: Date;
     testDevice?: RapidAntigenTestDevice
