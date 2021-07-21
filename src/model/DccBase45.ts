@@ -7,6 +7,7 @@ import {VSD_VACCINE_MEDICAL_PRODUCT} from "../data/VaccineMedicalProduct";
 import {VSD_VACCINE_MANUFACTURER} from "../data/VaccineManufacturer";
 import {COUNTRY_2_LETTER_ISO3166_CODES} from "../data/Country2LetterISO3166Codes";
 import {VSD_TEST_TYPE} from "../data/TestType";
+import {HSC_COMMON_RECONGINTION_RAT} from "../data/HscCommonRecogintionRat";
 const ChPayloadKeys = {
     ISSUER: 1,
     SUBJECT: 2,
@@ -385,7 +386,39 @@ export class DccHcertFactory {
          "nm": "ELITechGroup, SARS-CoV-2 ELITe MGB® Kit"
          */
         const testName = testGroup["nm"]
-        return {disease, testType, testName}
+
+        /**
+         Rapid antigen test (RAT) device identifier from the JRC database. Value set
+         (HSC common list):
+          All Rapid antigen tests in HSC common list (human readable).
+          https://covid-19-diagnostics.jrc.ec.europa.eu/devices/hsc-common-
+         recognition-rat (machine-readable, values of the field id_device
+         included on the list form the value set).
+         In EU/EEA countries, issuers MUST only issue certificates for tests belonging
+         to the currently valid value set. The value set MUST be updated every 24
+         hours.
+         Values outside of the value set MAY be used in certificates issued by third
+         countries, however the identifiers MUST still be from the JRC database. The
+         use of other identifiers such as those provided directly by test manufacturers is
+         not permitted.
+
+         Verifiers MUST detect values not belonging to the up to date value set and
+         render certificates bearing these as invalid. If an identifier is removed from
+         the value set, certificates including it MAY be accepted for a maximum of 72
+         hours after the removal.
+         The value set will be distributed from the EUDCC Gateway starting with the
+         gateway version 1.1.
+         For RAT: exactly 1 (one) non-empty field MUST be provided.
+         For NAAT: the field MUST NOT be used, even if the NAA test identifier is
+         available in the JRC database.
+         Example:
+         "ma": "344" (SD BIOSENSOR Inc, STANDARD F COVID-19 Ag
+         FIA)
+         */
+        const testDevice = HSC_COMMON_RECONGINTION_RAT.deviceList.filter(d => testGroup["ma"] === d.id_device).pop()
+
+
+        return {disease, testType, testName, testDevice}
     }
 }
 
@@ -413,7 +446,20 @@ export type EudccVaccinationGroup = {
     vaccinationCountry: string
 }
 
+export type RapidAntigenTestDeviceDocument = {
+    extracted_on: string
+    deviceList: RapidAntigenTestDevice[]
+}
+
+export type RapidAntigenTestDevice = {
+            id_device: string, commercial_name: string,
+            manufacturer: { id_manufacturer: string, name: string, country: string, website: string},
+            hsc_common_list: boolean, hsc_mutual_recognition:boolean, last_updated: string,
+            hsc_list_history:{list_date:string,in_common_list:boolean,in_mutual_recognition:boolean}[]
+        }
+
 export type EudccTestGroup = {
+    testDevice?: RapidAntigenTestDevice
     testName: string;
     testType: ValueSetValue
     disease: ValueSetValue

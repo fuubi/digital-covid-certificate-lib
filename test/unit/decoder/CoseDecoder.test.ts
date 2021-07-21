@@ -86,6 +86,7 @@ describe("Test the cose dcoder", () => {
             expect(testCert.infromation.testType.version).toBe('2.69')
 
             expect(testCert.infromation.testName).toBe('PCR')
+            expect(testCert.infromation.testDevice).toBe(undefined) // todo test with an RAT test
         }
     })
 })
