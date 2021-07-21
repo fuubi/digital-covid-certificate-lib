@@ -461,8 +461,22 @@ export class DccHcertFactory {
          */
         const testingCentre = testGroup["tc"]
 
+        /**
+         Country expressed as a 2-letter ISO3166 code (RECOMMENDED) or a
+         reference to an international organisation responsible for carrying out the test
+         (such as UNHCR or WHO). This MUST be a coded value from the value set
+         country-2-codes.json.
+         The value set will be distributed from the EUDCC Gateway starting with the
+         gateway version 1.1.
+         Exactly 1 (one) field MUST be provided.
+         Examples:
+         "co": "CZ"
+         "co": "UNHCR"
+         */
+        const testingCountry = COUNTRY_2_LETTER_ISO3166_CODES[testGroup["co"]]
 
-        return {disease, testType, testName, testDevice, testDate, testResult, testingCentre}
+
+        return {disease, testType, testName, testDevice, testDate, testResult, testingCentre, testingCountry}
     }
 }
 
@@ -503,6 +517,7 @@ export type RapidAntigenTestDevice = {
         }
 
 export type EudccTestGroup = {
+    testingCountry: string;
     testingCentre: string;
     testResult: ValueSetValue;
     testDate: Date;
