@@ -343,10 +343,22 @@ export class DccHcertFactory {
         return (key) => dccCose.getPayloadAsJson().get(ChPayloadKeys.HCERT).get(1)[key]
     }
 
-    private static getTestGroupInformation(dccCose: DccCose) {
-        const getValue = DccHcertFactory.getValue(dccCose)
+    private static getTestGroupInformation(dccCose: DccCose): EudccTestGroup {
+        const testGroup = DccHcertFactory.getValue(dccCose)("t")[0]
 
-        return {}
+        /**
+         A coded value from the value set
+         disease-agent-targeted.json.
+         This value set has a single entry 840539006, which is the code for COVID-
+         19 from SNOMED CT (GPS).
+         Exactly 1 (one) non-empty field MUST be provided.
+         Example:
+         "tg": "840539006"
+         */
+        const diseaseId = testGroup["tg"]
+        const disease = getValueSetValue(VSD_DISEASE_AGENT_TARGETED)(diseaseId, 'en')
+
+        return {disease}
     }
 }
 
@@ -375,6 +387,7 @@ export type EudccVaccinationGroup = {
 }
 
 export type EudccTestGroup = {
+    disease: ValueSetValue
 }
 
 export abstract class EudccHcert {
