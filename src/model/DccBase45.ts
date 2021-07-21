@@ -476,7 +476,36 @@ export class DccHcertFactory {
         const testingCountry = COUNTRY_2_LETTER_ISO3166_CODES[testGroup["co"]]
 
 
-        return {disease, testType, testName, testDevice, testDate, testResult, testingCentre, testingCountry}
+        /**
+         Country expressed as a 2-letter ISO3166 code (RECOMMENDED) or a
+         reference to an international organisation responsible for carrying out the test
+         (such as UNHCR or WHO). This MUST be a coded value from the value set
+         country-2-codes.json.
+         The value set will be distributed from the EUDCC Gateway starting with the
+         gateway version 1.1.
+         Exactly 1 (one) field MUST be provided.
+         Examples:
+         "co": "CZ"
+         "co": "UNHCR"
+         */
+        const certificateIssuer = testGroup["is"]
+
+        /**
+         Unique certificate identifier (UVCI) as specified in the vaccination-
+         proof_interoperability-guidelines_en.pdf (europa.eu)
+         The inclusion of the checksum is optional. The prefix "URN:UVCI:" may be
+         added.
+         Exactly 1 (one) non-empty field MUST be provided.
+         Examples:
+         "ci": "URN:UVCI:01:NL:187/37512422923"
+         "ci": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B"         */
+        const uniqueCertificateIdentifier = testGroup["ci"]
+
+        return {
+            disease, testType, testName, testDevice, testDate, testResult,
+            testingCentre, testingCountry,
+            certificateIssuer, uniqueCertificateIdentifier
+        }
     }
 }
 
@@ -517,6 +546,8 @@ export type RapidAntigenTestDevice = {
         }
 
 export type EudccTestGroup = {
+    uniqueCertificateIdentifier: string;
+    certificateIssuer: string;
     testingCountry: string;
     testingCentre: string;
     testResult: ValueSetValue;

@@ -98,6 +98,8 @@ describe("Test the cose dcoder", () => {
 
             expect(testCert.infromation.testingCentre).toBe("Testcenter")
             expect(testCert.infromation.testingCountry).toBe("Switzerland")
+            expect(testCert.infromation.certificateIssuer).toBe("Bundesamt für Gesundheit (BAG)")
+            expect(testCert.infromation.uniqueCertificateIdentifier).toBe("urn:uvci:01:CH:52DBC5C6503016A06162545C")
 
         }
     })
