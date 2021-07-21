@@ -538,7 +538,7 @@ export class DccHcertFactory {
          Example:
          "fr": "2021-05-18"
          */
-        const positiveTestDate = recoveryGroup["fr"]
+        const firstPositiveTestDate = recoveryGroup["fr"]
 
         /**
          Country expressed as a 2-letter ISO3166 code (RECOMMENDED) or a
@@ -570,6 +570,29 @@ export class DccHcertFactory {
         const certificateIssuer = recoveryGroup["is"]
 
         /**
+         The first date on which the certificate is considered to be valid. The date
+         MUST NOT be earlier than the date calculated as r/fr + 11 days.
+         The date MUST be provided in the format YYYY-MM-DD (complete date
+         without time). Other formats are not supported.
+         Exactly 1 (one) non-empty field MUST be provided.
+         Example:
+         "df": "2021-05-29"
+         */
+        const certificateValidFrom = recoveryGroup["df"]
+
+        /**
+         The last date on which the certificate is considered to be valid, assigned by the
+         certificate issuer. The date MUST NOT be after the date calculated as r/fr +
+         180 days.
+         The date MUST be provided in the format YYYY-MM-DD (complete date
+         without time). Other formats are not supported.
+         Exactly 1 (one) non-empty field MUST be provided.
+         Example:
+         "du": "2021-11-14"
+         */
+        const certificateValidUntil = recoveryGroup["du"]
+
+        /**
          Unique certificate identifier (UVCI) as specified in the vaccination-
          proof_interoperability-guidelines_en.pdf (europa.eu)
          The inclusion of the checksum is optional. The prefix "URN:UVCI:" may be
@@ -582,7 +605,9 @@ export class DccHcertFactory {
 
 
         return { disease, certificateIssuer, testingCountry,
-                 uniqueCertificateIdentifier, firstPositiveTestDate: positiveTestDate }
+                 uniqueCertificateIdentifier, firstPositiveTestDate,
+                 certificateValidFrom, certificateValidUntil
+        }
 
     }
 }
@@ -637,11 +662,13 @@ export type EudccTestGroup = {
 }
 
 export type EudccRecoeryGroup = {
-    firstPositiveTestDate: string;
-    uniqueCertificateIdentifier: string;
-    certificateIssuer: string;
-    testingCountry: string;
     disease: ValueSetValue
+    firstPositiveTestDate: string;
+    testingCountry: string;
+    certificateIssuer: string;
+    certificateValidFrom: string;
+    certificateValidUntil: string;
+    uniqueCertificateIdentifier: string;
 }
 
 export abstract class EudccHcert {
