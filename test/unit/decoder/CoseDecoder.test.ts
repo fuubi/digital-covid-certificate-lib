@@ -126,6 +126,8 @@ describe("Test the cose dcoder", () => {
             expect( recoveryCert.infromation.disease.system).toBe('http://snomed.info/sct')
             expect( recoveryCert.infromation.disease.version).toBe('http://snomed.info/sct/900000000000207008/version/20210131')
 
+            expect( recoveryCert.infromation.firstPositiveTestDate).toBe("2021-06-01")
+
             expect( recoveryCert.infromation.testingCountry).toBe("Switzerland")
             expect( recoveryCert.infromation.certificateIssuer).toBe("Bundesamt für Gesundheit (BAG)")
             expect( recoveryCert.infromation.uniqueCertificateIdentifier).toBe("urn:uvci:01:CH:FB7C3D8FD0CA31FCE18D5450")

@@ -531,6 +531,16 @@ export class DccHcertFactory {
         const disease = getValueSetValue(VSD_DISEASE_AGENT_TARGETED)(diseaseId, 'en')
 
         /**
+         The date when a sample for the NAAT test producing a positive result was
+         collected, in the format YYYY-MM-DD (complete date without time). Other
+         formats are not supported.
+         Exactly 1 (one) non-empty field MUST be provided.
+         Example:
+         "fr": "2021-05-18"
+         */
+        const positiveTestDate = recoveryGroup["fr"]
+
+        /**
          Country expressed as a 2-letter ISO3166 code (RECOMMENDED) or a
          reference to an international organisation responsible for carrying out the test
          (such as UNHCR or WHO). This MUST be a coded value from the value set
@@ -570,7 +580,9 @@ export class DccHcertFactory {
          "ci": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B"         */
         const uniqueCertificateIdentifier = recoveryGroup["ci"]
 
-        return { disease, certificateIssuer, testingCountry, uniqueCertificateIdentifier}
+
+        return { disease, certificateIssuer, testingCountry,
+                 uniqueCertificateIdentifier, firstPositiveTestDate: positiveTestDate }
 
     }
 }
@@ -625,6 +637,7 @@ export type EudccTestGroup = {
 }
 
 export type EudccRecoeryGroup = {
+    firstPositiveTestDate: string;
     uniqueCertificateIdentifier: string;
     certificateIssuer: string;
     testingCountry: string;
