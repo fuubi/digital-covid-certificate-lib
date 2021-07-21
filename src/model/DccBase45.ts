@@ -170,131 +170,134 @@ export class DccHcertFactory {
         }
 
         if(getValue("v")){
-            /**
-            A coded value from the value set
-            disease-agent-targeted.json.
-                This value set has a single entry 840539006, which is the code for COVID-
-                                                                                   19 from SNOMED CT (GPS).
-                Exactly 1 (one) non-empty field MUST be provided.
-                Example:
-            "tg": "840539006"
-             */
-            const diseaseId = getValue("v")[0]["tg"]
-            const disease = getValueSetValue(VSD_DISEASE_AGENT_TARGETED)(diseaseId, 'en')
+            const groupInformation = DccHcertFactory.getVaccinationGroupInformation(dccCose)
+            return new EudccHcert(version, person, groupInformation)
+        }
+    }
 
-            /**
-             Type of the vaccine or prophylaxis used.
-             A coded value from the value set
-             vaccine-prophylaxis.json.
-             The value set will be distributed from the EUDCC Gateway starting with the
-             gateway version 1.1.
-             Exactly 1 (one) non-empty field MUST be provided.
-             Example:
-             "vp": "1119349007" (a SARS-CoV-2 mRNA vaccine)
-             */
-            const vaccineOrProphylaxisId = getValue("v")[0]["vp"]
-            const vaccineOrProphylaxis = getValueSetValue(VSD_VACCINE_PROPHYLAXIS)(vaccineOrProphylaxisId, 'en')
+    private static getVaccinationGroupInformation(dccCose: DccCose) {
+        const getValue = DccHcertFactory.getValue(dccCose)
 
-            /**
-            Medicinal product used for this specific dose of vaccination. A coded value
-            from the value set
-            vaccine-medicinal-product.json.
-                The value set will be distributed from the EUDCC Gateway starting with the
-                gateway version 1.1.
-                Exactly 1 (one) non-empty field MUST be provided. Example:
-            "mp": "EU/1/20/1528" (Comirnaty)
-            */
-            const vaccineProductId = getValue("v")[0]["mp"]
-            const vaccineProduct = getValueSetValue(VSD_VACCINE_MEDICAL_PRODUCT)(vaccineProductId, 'en')
+        /**
+         A coded value from the value set
+         disease-agent-targeted.json.
+         This value set has a single entry 840539006, which is the code for COVID-
+         19 from SNOMED CT (GPS).
+         Exactly 1 (one) non-empty field MUST be provided.
+         Example:
+         "tg": "840539006"
+         */
+        const diseaseId = getValue("v")[0]["tg"]
+        const disease = getValueSetValue(VSD_DISEASE_AGENT_TARGETED)(diseaseId, 'en')
 
-            /**
-             Marketing authorisation holder or manufacturer, if no marketing authorization
-             holder is present. A coded value from the value set
-             vaccine-mah-manf.json.
-             The value set will be distributed from the EUDCC Gateway starting with the
-             gateway version 1.1.
-             Exactly 1 (one) non-empty field MUST be provided. Example:
-             "ma": "ORG-100030215" (Biontech Manufacturing GmbH)
-             */
-            const vaccineManufacturerId = getValue("v")[0]["ma"]
-            const vaccineManufacturer = getValueSetValue(VSD_VACCINE_MANUFACTURER)(vaccineManufacturerId, 'en')
+        /**
+         Type of the vaccine or prophylaxis used.
+         A coded value from the value set
+         vaccine-prophylaxis.json.
+         The value set will be distributed from the EUDCC Gateway starting with the
+         gateway version 1.1.
+         Exactly 1 (one) non-empty field MUST be provided.
+         Example:
+         "vp": "1119349007" (a SARS-CoV-2 mRNA vaccine)
+         */
+        const vaccineOrProphylaxisId = getValue("v")[0]["vp"]
+        const vaccineOrProphylaxis = getValueSetValue(VSD_VACCINE_PROPHYLAXIS)(vaccineOrProphylaxisId, 'en')
 
-            /**
-             Sequence number (positive integer) of the dose given during this vaccination
-             event. 1 for the first dose, 2 for the second dose etc.
-             Exactly 1 (one) non-empty field MUST be provided.
-             Examples:
-                "dn": "1" (first dose in a series)
-                "dn": "2" (second dose in a series)
-                "dn": "3" (third dose in a series, such as in case of a booster)
-             */
-            const doseNumber = getValue("v")[0]["dn"]
+        /**
+         Medicinal product used for this specific dose of vaccination. A coded value
+         from the value set
+         vaccine-medicinal-product.json.
+         The value set will be distributed from the EUDCC Gateway starting with the
+         gateway version 1.1.
+         Exactly 1 (one) non-empty field MUST be provided. Example:
+         "mp": "EU/1/20/1528" (Comirnaty)
+         */
+        const vaccineProductId = getValue("v")[0]["mp"]
+        const vaccineProduct = getValueSetValue(VSD_VACCINE_MEDICAL_PRODUCT)(vaccineProductId, 'en')
 
-            /**
-             Total number of doses (positive integer) in a complete vaccination series
-             according to the used vaccination protocol. The protocol is not in all cases
-             directly defined by the vaccine product, as in some countries only one dose of
-             normally two-dose vaccines is delivered to people recovered from COVID-
-             19. In these cases, the value of the field should be set to 1.
-             Exactly 1 (one) non-empty field MUST be provided.
-             Examples:
-             "sd": "1" (for all 1-dose vaccination schedules)
-             "sd": "2" (for 2-dose vaccination schedules)
-             "sd": "3" (in case of a booster)
-             */
-            const overallDoseNumber = getValue("v")[0]["sd"]
+        /**
+         Marketing authorisation holder or manufacturer, if no marketing authorization
+         holder is present. A coded value from the value set
+         vaccine-mah-manf.json.
+         The value set will be distributed from the EUDCC Gateway starting with the
+         gateway version 1.1.
+         Exactly 1 (one) non-empty field MUST be provided. Example:
+         "ma": "ORG-100030215" (Biontech Manufacturing GmbH)
+         */
+        const vaccineManufacturerId = getValue("v")[0]["ma"]
+        const vaccineManufacturer = getValueSetValue(VSD_VACCINE_MANUFACTURER)(vaccineManufacturerId, 'en')
 
-            /**
-             The date when the described dose was received, in the format YYYY-MM-DD
-             (full date without time). Other formats are not supported.
-             Exactly 1 (one) non-empty field MUST be provided. Example:
-             "dt": "2021-03-28"
-             */
-            const vaccinationDate = getValue("v")[0]["dt"]
+        /**
+         Sequence number (positive integer) of the dose given during this vaccination
+         event. 1 for the first dose, 2 for the second dose etc.
+         Exactly 1 (one) non-empty field MUST be provided.
+         Examples:
+         "dn": "1" (first dose in a series)
+         "dn": "2" (second dose in a series)
+         "dn": "3" (third dose in a series, such as in case of a booster)
+         */
+        const doseNumber = getValue("v")[0]["dn"]
 
-            /**
-             Country expressed as a 2-letter ISO3166 code (RECOMMENDED) or a
-             reference to an international organisation responsible for the vaccination event
-             (such as UNHCR or WHO).  A coded value from the value set
-             country-2-codes.json.
-             The value set will be distributed from the EUDCC Gateway starting
-             with the gateway version 1.1.
-             Exactly 1 (one) field MUST be provided.
-             Example:
-             "co": "CZ"
-             "co": "UNHCR"
-             */
-                // We only handle the 2 letter code.
-            const vaccinationCountry = COUNTRY_2_LETTER_ISO3166_CODES[getValue("v")[0]["co"]]
+        /**
+         Total number of doses (positive integer) in a complete vaccination series
+         according to the used vaccination protocol. The protocol is not in all cases
+         directly defined by the vaccine product, as in some countries only one dose of
+         normally two-dose vaccines is delivered to people recovered from COVID-
+         19. In these cases, the value of the field should be set to 1.
+         Exactly 1 (one) non-empty field MUST be provided.
+         Examples:
+         "sd": "1" (for all 1-dose vaccination schedules)
+         "sd": "2" (for 2-dose vaccination schedules)
+         "sd": "3" (in case of a booster)
+         */
+        const overallDoseNumber = getValue("v")[0]["sd"]
 
-            /**
-             Name of the organisation that issued the certificate. Identifiers are allowed as
-             part of the name, but not recommended to be used individually without the
-             name as a text. Max 80 UTF-8 characters.
-             Exactly 1 (one) non-empty field MUST be provided. Example:
-             "is": "Ministry of Health of the Czech Republic"
-             "is": "Vaccination Centre South District 3"             */
-            const certificateIssuer = getValue("v")[0]["is"]
+        /**
+         The date when the described dose was received, in the format YYYY-MM-DD
+         (full date without time). Other formats are not supported.
+         Exactly 1 (one) non-empty field MUST be provided. Example:
+         "dt": "2021-03-28"
+         */
+        const vaccinationDate = getValue("v")[0]["dt"]
 
-            /**
-             Unique certificate identifier (UVCI) as specified in the vaccination-
-             proof_interoperability-guidelines_en.pdf (europa.eu)
-             The inclusion of the checksum is optional. The prefix "URN:UVCI:" may be
-             added.
-             Exactly 1 (one) non-empty field MUST be provided.
-             Examples:
-             "ci": "URN:UVCI:01:NL:187/37512422923"
-             "ci": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B"         */
-            const uniqueCertificateIdentifier = getValue("v")[0]["ci"]
+        /**
+         Country expressed as a 2-letter ISO3166 code (RECOMMENDED) or a
+         reference to an international organisation responsible for the vaccination event
+         (such as UNHCR or WHO).  A coded value from the value set
+         country-2-codes.json.
+         The value set will be distributed from the EUDCC Gateway starting
+         with the gateway version 1.1.
+         Exactly 1 (one) field MUST be provided.
+         Example:
+         "co": "CZ"
+         "co": "UNHCR"
+         */
+            // We only handle the 2 letter code.
+        const vaccinationCountry = COUNTRY_2_LETTER_ISO3166_CODES[getValue("v")[0]["co"]]
 
-            return new EudccHcert(
-                version,
-                person,
-                {
-                    disease, vaccineOrProphylaxis, vaccineProduct, vaccineManufacturer,
-                    doseNumber, overallDoseNumber, vaccinationDate, vaccinationCountry,
-                    certificateIssuer, uniqueCertificateIdentifier
-                })
+        /**
+         Name of the organisation that issued the certificate. Identifiers are allowed as
+         part of the name, but not recommended to be used individually without the
+         name as a text. Max 80 UTF-8 characters.
+         Exactly 1 (one) non-empty field MUST be provided. Example:
+         "is": "Ministry of Health of the Czech Republic"
+         "is": "Vaccination Centre South District 3"             */
+        const certificateIssuer = getValue("v")[0]["is"]
+
+        /**
+         Unique certificate identifier (UVCI) as specified in the vaccination-
+         proof_interoperability-guidelines_en.pdf (europa.eu)
+         The inclusion of the checksum is optional. The prefix "URN:UVCI:" may be
+         added.
+         Exactly 1 (one) non-empty field MUST be provided.
+         Examples:
+         "ci": "URN:UVCI:01:NL:187/37512422923"
+         "ci": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B"         */
+        const uniqueCertificateIdentifier = getValue("v")[0]["ci"]
+        return {
+            disease, vaccineOrProphylaxis, vaccineProduct, vaccineManufacturer,
+            doseNumber, overallDoseNumber, vaccinationDate, vaccinationCountry,
+            certificateIssuer, uniqueCertificateIdentifier
         }
     }
 
