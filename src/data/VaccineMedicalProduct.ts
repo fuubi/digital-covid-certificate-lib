@@ -1,6 +1,6 @@
 import {ValueSetDocument} from "./ValueSets";
 
-const vaccineMedicalProduct: ValueSetDocument =    {
+export const VSD_VACCINE_MEDICAL_PRODUCT: ValueSetDocument =    {
         "valueSetId": "vaccines-covid-19-names",
         "valueSetDate": "2021-04-27",
         "valueSetValues": {
@@ -91,6 +91,3 @@ const vaccineMedicalProduct: ValueSetDocument =    {
         }
     }
 
-    export const getVaccineMedicalProduct = (code: string, lang: 'en') => {
-    return vaccineMedicalProduct.valueSetValues[code]
-}

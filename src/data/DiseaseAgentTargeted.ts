@@ -3,7 +3,7 @@
 
 import {ValueSetDocument} from "./ValueSets";
 
-const  diseaseAgentTargeted: ValueSetDocument= {
+export const  VSD_DISEASE_AGENT_TARGETED: ValueSetDocument= {
   "valueSetId": "disease-agent-targeted",
   "valueSetDate": "2021-04-27",
   "valueSetValues": {
@@ -17,6 +17,3 @@ const  diseaseAgentTargeted: ValueSetDocument= {
   }
 }
 
-export const getDiseaseValueSet = (code: string, lang: 'en') => {
-  return diseaseAgentTargeted.valueSetValues[code]
-}

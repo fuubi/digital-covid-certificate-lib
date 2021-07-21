@@ -11,3 +11,7 @@ export type ValueSetValue = {
     "version": string,
     "system": string
 }
+
+export const getValueSetValue = (valueSet: ValueSetDocument) =>  (code: string, lang: 'en') => {
+    return valueSet.valueSetValues[code]
+}

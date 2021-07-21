@@ -1,9 +1,9 @@
 import * as cbor from "cbor-web";
 import get = Reflect.get;
-import { getDiseaseValueSet} from "../data/DiseaseAgentTargeted";
-import {getVaccineProphylaxis} from "../data/VaccineProphylaxis";
-import {ValueSetValue} from "../data/ValueSets";
-import {getVaccineMedicalProduct} from "../data/VaccineMedicalProduct";
+import {getValueSetValue, ValueSetValue} from "../data/ValueSets";
+import {VSD_DISEASE_AGENT_TARGETED} from "../data/DiseaseAgentTargeted";
+import {VSD_VACCINE_PROPHYLAXIS} from "../data/VaccineProphylaxis";
+import {VSD_VACCINE_MEDICAL_PRODUCT} from "../data/VaccineMedicalProduct";
 const ChPayloadKeys = {
     ISSUER: 1,
     SUBJECT: 2,
@@ -177,7 +177,8 @@ export class DccHcertFactory {
                 Example:
             "tg": "840539006"
              */
-            const disease = getDiseaseValueSet(getValue("v")[0]["tg"], 'en')
+            const diseaseId = getValue("v")[0]["tg"]
+            const disease = getValueSetValue(VSD_DISEASE_AGENT_TARGETED)(diseaseId, 'en')
 
             /**
              Type of the vaccine or prophylaxis used.
@@ -189,7 +190,8 @@ export class DccHcertFactory {
              Example:
              "vp": "1119349007" (a SARS-CoV-2 mRNA vaccine)
              */
-            const vaccineOrProphylaxis = getVaccineProphylaxis(getValue("v")[0]["vp"], 'en')
+            const vaccineOrProphylaxisId = getValue("v")[0]["vp"]
+            const vaccineOrProphylaxis = getValueSetValue(VSD_VACCINE_PROPHYLAXIS)(vaccineOrProphylaxisId, 'en')
 
             /**
             Medicinal product used for this specific dose of vaccination. A coded value
@@ -200,7 +202,9 @@ export class DccHcertFactory {
                 Exactly 1 (one) non-empty field MUST be provided. Example:
             "mp": "EU/1/20/1528" (Comirnaty)
             */
-            const vaccineProduct = getVaccineMedicalProduct(getValue("v")[0]["mp"], 'en')
+            const vaccineProductId = getValue("v")[0]["mp"]
+            const vaccineProduct = getValueSetValue(VSD_VACCINE_MEDICAL_PRODUCT)(vaccineProductId, 'en')
+
 
             return new EudccHcert(
                 version,
