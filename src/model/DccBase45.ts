@@ -61,7 +61,7 @@ export class DccCert {
 
 export class DccHcertFactory {
 
-    static create(dccCose: DccCose): VaccinationCertificate {
+    static create(dccCose: DccCose): EudccCertificate {
         const version = DccHcertFactory.getValue(dccCose)("ver")
         if(version){
             // could later be used to dereference different version, for now we just ignore it
@@ -74,7 +74,7 @@ export class DccHcertFactory {
      * https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf
      * @param dccCose
      */
-    static dereferenceV_1_3_0(dccCose: DccCose): VaccinationCertificate{
+    static dereferenceV_1_3_0(dccCose: DccCose): EudccCertificate {
         const getMetadataValue = DccHcertFactory.getMetaDataValue(dccCose)
         const getValue = DccHcertFactory.getValue(dccCose)
         /**
@@ -174,7 +174,8 @@ export class DccHcertFactory {
             return new VaccinationCertificate(version, person, groupInformation)
         }
         else if (getValue("t")){
-
+            const groupInformation = DccHcertFactory.getTestGroupInformation(dccCose)
+            return new TestCertificate(version, person, groupInformation)
         }
     }
 
@@ -342,6 +343,11 @@ export class DccHcertFactory {
         return (key) => dccCose.getPayloadAsJson().get(ChPayloadKeys.HCERT).get(1)[key]
     }
 
+    private static getTestGroupInformation(dccCose: DccCose) {
+        const getValue = DccHcertFactory.getValue(dccCose)
+
+        return {}
+    }
 }
 
 
@@ -353,7 +359,7 @@ export type EudccPerson = {
     dateOfBirth: string
 }
 
-export type EudccSpecificInformation =EudccVaccinationGroup // | EudccTestGroup | EudccRecoveryGroup
+export type EudccCertificate = VaccinationCertificate | TestCertificate // | EudccTestGroup | EudccRecoveryGroup
 
 export type EudccVaccinationGroup = {
     uniqueCertificateIdentifier: string;
@@ -383,12 +389,21 @@ export class VaccinationCertificate extends EudccHcert{
     constructor(
         public readonly schemaVersion: string,
         public readonly person: EudccPerson,
-        public readonly infromation: EudccSpecificInformation
+        public readonly infromation: EudccVaccinationGroup
     ) {
         super(schemaVersion, person)
     }
 }
 
+export class TestCertificate extends EudccHcert{
+    constructor(
+        public readonly schemaVersion: string,
+        public readonly person: EudccPerson,
+        public readonly infromation: EudccTestGroup
+    ) {
+        super(schemaVersion, person)
+    }
+}
 
 
 
