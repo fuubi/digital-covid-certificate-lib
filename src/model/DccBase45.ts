@@ -6,6 +6,7 @@ import {VSD_VACCINE_PROPHYLAXIS} from "../data/VaccineProphylaxis";
 import {VSD_VACCINE_MEDICAL_PRODUCT} from "../data/VaccineMedicalProduct";
 import {VSD_VACCINE_MANUFACTURER} from "../data/VaccineManufacturer";
 import {COUNTRY_2_LETTER_ISO3166_CODES} from "../data/Country2LetterISO3166Codes";
+import {VSD_TEST_TYPE} from "../data/TestType";
 const ChPayloadKeys = {
     ISSUER: 1,
     SUBJECT: 2,
@@ -358,7 +359,19 @@ export class DccHcertFactory {
         const diseaseId = testGroup["tg"]
         const disease = getValueSetValue(VSD_DISEASE_AGENT_TARGETED)(diseaseId, 'en')
 
-        return {disease}
+        /**
+         A coded value from the value set
+         disease-agent-targeted.json.
+         This value set has a single entry 840539006, which is the code for COVID-
+         19 from SNOMED CT (GPS).
+         Exactly 1 (one) non-empty field MUST be provided.
+         Example:
+         "tg": "840539006"
+         */
+        const testTypeId = testGroup["tt"]
+        const testType = getValueSetValue(VSD_TEST_TYPE)(testTypeId, 'en')
+
+        return {disease, testType}
     }
 }
 
@@ -387,6 +400,7 @@ export type EudccVaccinationGroup = {
 }
 
 export type EudccTestGroup = {
+    testType: ValueSetValue
     disease: ValueSetValue
 }
 

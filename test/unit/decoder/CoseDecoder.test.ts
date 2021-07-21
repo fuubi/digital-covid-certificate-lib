@@ -78,6 +78,13 @@ describe("Test the cose dcoder", () => {
             expect(testCert.infromation.disease.display).toBe('COVID-19')
             expect(testCert.infromation.disease.system).toBe('http://snomed.info/sct')
             expect(testCert.infromation.disease.version).toBe('http://snomed.info/sct/900000000000207008/version/20210131')
+
+            expect(testCert.infromation.testType.active).toBe(true)
+            expect(testCert.infromation.testType.lang).toBe('en')
+            expect(testCert.infromation.testType.display).toBe('Nucleic acid amplification with probe detection')
+            expect(testCert.infromation.testType.system).toBe('http://loinc.org')
+            expect(testCert.infromation.testType.version).toBe('2.69')
+
         }
     })
 })
