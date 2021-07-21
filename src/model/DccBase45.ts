@@ -218,10 +218,21 @@ export class DccHcertFactory {
             const vaccineManufacturerId = getValue("v")[0]["ma"]
             const vaccineManufacturer = getValueSetValue(VSD_VACCINE_MANUFACTURER)(vaccineManufacturerId, 'en')
 
+            /**
+             Sequence number (positive integer) of the dose given during this vaccination
+             event. 1 for the first dose, 2 for the second dose etc.
+             Exactly 1 (one) non-empty field MUST be provided.
+             Examples:
+                "dn": "1" (first dose in a series)
+                "dn": "2" (second dose in a series)
+                "dn": "3" (third dose in a series, such as in case of a booster)
+             */
+            const doseNumber = getValue("v")[0]["dn"]
+
             return new EudccHcert(
                 version,
                 person,
-                {disease, vaccineOrProphylaxis, vaccineProduct, vaccineManufacturer})
+                {disease, vaccineOrProphylaxis, vaccineProduct, vaccineManufacturer, doseNumber})
         }
     }
 
@@ -280,7 +291,8 @@ export type EudccVaccinationGroup = {
     disease: ValueSetValue,
     vaccineOrProphylaxis: ValueSetValue
     vaccineProduct: ValueSetValue
-    vaccineManufacturer: ValueSetValue
+    vaccineManufacturer: ValueSetValue,
+    doseNumber: number
 
 }
 

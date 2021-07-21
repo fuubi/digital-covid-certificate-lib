@@ -42,5 +42,7 @@ describe("Test the cose dcoder", ( ) => {
         expect(hcert.infromation.vaccineManufacturer.display).toBe('Janssen-Cilag International')
         expect(hcert.infromation.vaccineManufacturer.system).toBe('https://spor.ema.europa.eu/v1/organisations')
         expect(hcert.infromation.vaccineManufacturer.version).toBe('')
+
+        expect(hcert.infromation.doseNumber).toBe(2)
     })
 })
