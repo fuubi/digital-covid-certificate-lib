@@ -45,5 +45,7 @@ describe("Test the cose dcoder", ( ) => {
 
         expect(hcert.infromation.doseNumber).toBe(2)
         expect(hcert.infromation.overallDoseNumber).toBe(2)
+
+        expect(hcert.infromation.vaccinationDate).toBe("2021-06-07")
     })
 })
