@@ -179,6 +179,13 @@ export class DccHcertFactory {
             const groupInformation = DccHcertFactory.getTestGroupInformation(dccCose)
             return new TestCertificate(version, person, groupInformation)
         }
+        else if (getValue("r")){
+            const groupInformation = DccHcertFactory.getRecoveryGroupInformation(dccCose)
+            return new RecoveryCertificate(version, person, groupInformation)
+        }
+
+        throw new Error("...")
+
     }
 
     private static getVaccinationGroupInformation(dccCose: DccCose) {
@@ -507,6 +514,65 @@ export class DccHcertFactory {
             certificateIssuer, uniqueCertificateIdentifier
         }
     }
+
+    private static getRecoveryGroupInformation(dccCose: DccCose): EudccRecoeryGroup {
+        const recoveryGroup = DccHcertFactory.getValue(dccCose)("r")[0]
+
+        /**
+         A coded value from the value set
+         disease-agent-targeted.json.
+         This value set has a single entry 840539006, which is the code for COVID-
+         19 from SNOMED CT (GPS).
+         Exactly 1 (one) non-empty field MUST be provided.
+         Example:
+         "tg": "840539006"
+         */
+        const diseaseId = recoveryGroup["tg"]
+        const disease = getValueSetValue(VSD_DISEASE_AGENT_TARGETED)(diseaseId, 'en')
+
+        /**
+         Country expressed as a 2-letter ISO3166 code (RECOMMENDED) or a
+         reference to an international organisation responsible for carrying out the test
+         (such as UNHCR or WHO). This MUST be a coded value from the value set
+         country-2-codes.json.
+         The value set will be distributed from the EUDCC Gateway starting with the
+         gateway version 1.1.
+         Exactly 1 (one) field MUST be provided.
+         Examples:
+         "co": "CZ"
+         "co": "UNHCR"
+         */
+        const testingCountry = COUNTRY_2_LETTER_ISO3166_CODES[recoveryGroup["co"]]
+
+
+        /**
+         Country expressed as a 2-letter ISO3166 code (RECOMMENDED) or a
+         reference to an international organisation responsible for carrying out the test
+         (such as UNHCR or WHO). This MUST be a coded value from the value set
+         country-2-codes.json.
+         The value set will be distributed from the EUDCC Gateway starting with the
+         gateway version 1.1.
+         Exactly 1 (one) field MUST be provided.
+         Examples:
+         "co": "CZ"
+         "co": "UNHCR"
+         */
+        const certificateIssuer = recoveryGroup["is"]
+
+        /**
+         Unique certificate identifier (UVCI) as specified in the vaccination-
+         proof_interoperability-guidelines_en.pdf (europa.eu)
+         The inclusion of the checksum is optional. The prefix "URN:UVCI:" may be
+         added.
+         Exactly 1 (one) non-empty field MUST be provided.
+         Examples:
+         "ci": "URN:UVCI:01:NL:187/37512422923"
+         "ci": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B"         */
+        const uniqueCertificateIdentifier = recoveryGroup["ci"]
+
+        return { disease, certificateIssuer, testingCountry, uniqueCertificateIdentifier}
+
+    }
 }
 
 
@@ -518,7 +584,7 @@ export type EudccPerson = {
     dateOfBirth: string
 }
 
-export type EudccCertificate = VaccinationCertificate | TestCertificate // | EudccTestGroup | EudccRecoveryGroup
+export type EudccCertificate = VaccinationCertificate | TestCertificate | RecoveryCertificate
 
 export type EudccVaccinationGroup = {
     uniqueCertificateIdentifier: string;
@@ -558,6 +624,13 @@ export type EudccTestGroup = {
     disease: ValueSetValue
 }
 
+export type EudccRecoeryGroup = {
+    uniqueCertificateIdentifier: string;
+    certificateIssuer: string;
+    testingCountry: string;
+    disease: ValueSetValue
+}
+
 export abstract class EudccHcert {
 
     protected constructor(
@@ -586,6 +659,15 @@ export class TestCertificate extends EudccHcert{
     }
 }
 
+export class RecoveryCertificate extends EudccHcert{
+    constructor(
+        public readonly schemaVersion: string,
+        public readonly person: EudccPerson,
+        public readonly infromation: EudccRecoeryGroup
+    ) {
+        super(schemaVersion, person)
+    }
+}
 
 
 export class DccCose {
