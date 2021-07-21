@@ -8,6 +8,7 @@ import {VSD_VACCINE_MANUFACTURER} from "../data/VaccineManufacturer";
 import {COUNTRY_2_LETTER_ISO3166_CODES} from "../data/Country2LetterISO3166Codes";
 import {VSD_TEST_TYPE} from "../data/TestType";
 import {HSC_COMMON_RECONGINTION_RAT} from "../data/HscCommonRecogintionRat";
+import {VSD_TEST_RESULTS} from "../data/TestResult";
 const ChPayloadKeys = {
     ISSUER: 1,
     SUBJECT: 2,
@@ -437,7 +438,19 @@ export class DccHcertFactory {
          */
         const testDate = new Date(testGroup["sc"])
 
-        return {disease, testType, testName, testDevice, testDate}
+
+
+        /**
+         The result of the test. A coded value from the value set
+         test-result.json (based on SNOMED CT, GPS).
+         Exactly 1 (one) non-empty field MUST be provided.
+         Example:
+         "tr": "260415000"  (Not detected)
+         */
+        const testResultId = testGroup["tr"]
+        const testResult = getValueSetValue(VSD_TEST_RESULTS)(testResultId, 'en')
+
+        return {disease, testType, testName, testDevice, testDate, testResult}
     }
 }
 
@@ -478,6 +491,7 @@ export type RapidAntigenTestDevice = {
         }
 
 export type EudccTestGroup = {
+    testResult: ValueSetValue;
     testDate: Date;
     testDevice?: RapidAntigenTestDevice
     testName: string;

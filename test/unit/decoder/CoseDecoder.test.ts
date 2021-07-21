@@ -88,7 +88,14 @@ describe("Test the cose dcoder", () => {
             expect(testCert.infromation.testName).toBe('PCR')
             expect(testCert.infromation.testDevice).toBe(undefined) // todo test with an RAT test
 
-            expect(testCert.infromation.testDate).toStrictEqual(new Date("2021-06-28T05:00:00.000Z")) // todo test with an RAT test
+            expect(testCert.infromation.testDate).toStrictEqual(new Date("2021-06-28T05:00:00.000Z"))
+
+            expect(testCert.infromation.testResult.active).toBe(true)
+            expect(testCert.infromation.testResult.lang).toBe('en')
+            expect(testCert.infromation.testResult.display).toBe('Not detected')
+            expect(testCert.infromation.testResult.system).toBe('http://snomed.info/sct')
+            expect(testCert.infromation.testResult.version).toBe('http://snomed.info/sct/900000000000207008/version/20210131')
+
 
         }
     })
