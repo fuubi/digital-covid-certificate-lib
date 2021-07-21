@@ -48,5 +48,7 @@ describe("Test the cose dcoder", ( ) => {
 
         expect(hcert.infromation.vaccinationDate).toBe("2021-06-07")
         expect(hcert.infromation.vaccinationCountry).toBe("Switzerland")
+
+        expect(hcert.infromation.certificateIssuer).toBe("Bundesamt für Gesundheit (BAG)")
     })
 })

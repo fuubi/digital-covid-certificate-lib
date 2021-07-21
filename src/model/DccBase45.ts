@@ -267,12 +267,23 @@ export class DccHcertFactory {
                 // We only handle the 2 letter code.
             const vaccinationCountry = COUNTRY_2_LETTER_ISO3166_CODES[getValue("v")[0]["co"]]
 
+            /**
+             Name of the organisation that issued the certificate. Identifiers are allowed as
+             part of the name, but not recommended to be used individually without the
+             name as a text. Max 80 UTF-8 characters.
+             Exactly 1 (one) non-empty field MUST be provided. Example:
+             "is": "Ministry of Health of the Czech Republic"
+             "is": "Vaccination Centre South District 3"             */
+            const certificateIssuer = getValue("v")[0]["is"]
+
             return new EudccHcert(
                 version,
                 person,
                 {
                     disease, vaccineOrProphylaxis, vaccineProduct, vaccineManufacturer,
-                    doseNumber, overallDoseNumber, vaccinationDate, vaccinationCountry})
+                    doseNumber, overallDoseNumber, vaccinationDate, vaccinationCountry,
+                    certificateIssuer
+                })
         }
     }
 
@@ -328,6 +339,7 @@ export type EudccPerson = {
 export type EudccSpecificInformation =EudccVaccinationGroup // | EudccTestGroup | EudccRecoveryGroup
 
 export type EudccVaccinationGroup = {
+    certificateIssuer: string;
     disease: ValueSetValue,
     vaccineOrProphylaxis: ValueSetValue
     vaccineProduct: ValueSetValue
