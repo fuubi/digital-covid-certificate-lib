@@ -417,8 +417,27 @@ export class DccHcertFactory {
          */
         const testDevice = HSC_COMMON_RECONGINTION_RAT.deviceList.filter(d => testGroup["ma"] === d.id_device).pop()
 
+        /**
+         * The date and time when the test sample was collected. The time MUST
+         include information on the time zone. The value MUST NOT denote the time
+         when the test result was produced.
+         Exactly 1 (one) non-empty field MUST be provided.
+         One of the following ISO 8601 formats MUST be used. Other options are not
+         supported.
+         YYYY-MM-DDThh:mm:ssZ
+         YYYY-MM-DDThh:mm:ss[+-]hh
+         YYYY-MM-DDThh:mm:ss[+-]hhmm
+         YYYY-MM-DDThh:mm:ss[+-]hh:mm
 
-        return {disease, testType, testName, testDevice}
+         Examples:
+         "sc": "2021-08-20T10:03:12Z" (UTC time)
+         "sc": "2021-08-20T12:03:12+02" (CEST time)
+         "sc": "2021-08-20T12:03:12+0200" (CEST time)
+         "sc": "2021-08-20T12:03:12+02:00" (CEST time)
+         */
+        const testDate = new Date(testGroup["sc"])
+
+        return {disease, testType, testName, testDevice, testDate}
     }
 }
 
@@ -459,6 +478,7 @@ export type RapidAntigenTestDevice = {
         }
 
 export type EudccTestGroup = {
+    testDate: Date;
     testDevice?: RapidAntigenTestDevice
     testName: string;
     testType: ValueSetValue

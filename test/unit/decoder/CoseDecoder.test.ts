@@ -87,6 +87,9 @@ describe("Test the cose dcoder", () => {
 
             expect(testCert.infromation.testName).toBe('PCR')
             expect(testCert.infromation.testDevice).toBe(undefined) // todo test with an RAT test
+
+            expect(testCert.infromation.testDate).toStrictEqual(new Date("2021-06-28T05:00:00.000Z")) // todo test with an RAT test
+
         }
     })
 })
