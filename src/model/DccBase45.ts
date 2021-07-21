@@ -229,10 +229,25 @@ export class DccHcertFactory {
              */
             const doseNumber = getValue("v")[0]["dn"]
 
+            /**
+             Total number of doses (positive integer) in a complete vaccination series
+             according to the used vaccination protocol. The protocol is not in all cases
+             directly defined by the vaccine product, as in some countries only one dose of
+             normally two-dose vaccines is delivered to people recovered from COVID-
+             19. In these cases, the value of the field should be set to 1.
+             Exactly 1 (one) non-empty field MUST be provided.
+             Examples:
+             "sd": "1" (for all 1-dose vaccination schedules)
+             "sd": "2" (for 2-dose vaccination schedules)
+             "sd": "3" (in case of a booster)
+             */
+            const overallDoseNumber = getValue("v")[0]["sd"]
             return new EudccHcert(
                 version,
                 person,
-                {disease, vaccineOrProphylaxis, vaccineProduct, vaccineManufacturer, doseNumber})
+                {
+                    disease, vaccineOrProphylaxis, vaccineProduct, vaccineManufacturer,
+                    doseNumber, overallDoseNumber})
         }
     }
 
@@ -292,7 +307,8 @@ export type EudccVaccinationGroup = {
     vaccineOrProphylaxis: ValueSetValue
     vaccineProduct: ValueSetValue
     vaccineManufacturer: ValueSetValue,
-    doseNumber: number
+    doseNumber: number,
+    overallDoseNumber: number
 
 }
 
