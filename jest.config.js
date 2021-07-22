@@ -19,4 +19,7 @@ module.exports = {
     '/node_modules/',
     '/test/',
   ],
+  moduleNameMapper: {
+    "^jose/(.*)$": "<rootDir>/node_modules/jose/dist/node/cjs/$1"
+  },
 };
