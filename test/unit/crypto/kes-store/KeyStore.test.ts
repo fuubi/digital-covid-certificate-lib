@@ -1,5 +1,5 @@
-import {KeyStore} from "../../../src/crypto/KeyStore";
-import {Jwt} from "../../../src/crypto/Jwt";
+import {ChKeyStore} from "../../../../src/crypto/key-store/ChKeyStore";
+import {Jwt} from "../../../../src/crypto/Jwt";
 
 describe("Test the key store", ( ) => {
     test("Should load the signing keys from a JWT (without signature verification)", async () =>{
@@ -15,8 +15,8 @@ describe("Test the key store", ( ) => {
                     "y": null
                 }]}, mac: new ArrayBuffer(256)};
 
-        const keyStore = new KeyStore()
-        keyStore.loadFromJWT(jwt, false)
+        const keyStore = new ChKeyStore()
+        keyStore.loadKeys({jwt, verifySignature: false})
         const key = keyStore.getKey("Ll3NP03zOxY=");
         expect(key).toBeDefined()
         }
