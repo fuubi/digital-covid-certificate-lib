@@ -1,9 +1,11 @@
+import {Jwt} from "./Jwt";
+
 export class KeyStore {
-    private keys
+    private keys: ({keyId: string} & JsonWebKey)[]
     constructor() {
     }
 
-    private loadX509CertificatChain(jwt: string, checkSignature: boolean){
+    private loadX509CertificatChain(jwt: Jwt, checkSignature: boolean){
         if (checkSignature) {
             throw new Error("Not implemented")
         }else {
@@ -12,15 +14,18 @@ export class KeyStore {
     }
 
 
-    public loadFromJWT(jwt: string, verifySignature: boolean){
+    public loadFromJWT(jwt: Jwt, verifySignature: boolean){
+
         if (verifySignature) {
             throw new Error("Not implemented")
         }else {
-            throw new Error("Not implemented")
+            this.keys = jwt.payload.certs
         }
     }
 
     getKey(kid:string){
-        throw new Error("Not implemented")
+       return  this.keys.filter(key => key.keyId === kid).pop()
     }
+
+
 }
