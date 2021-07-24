@@ -726,7 +726,10 @@ export class DccCose {
     }
 
     getContentToSign(){
-       return  cbor.encode(["Signature1", this.signedHeader, this.unsignedHeader, this.payload])
+       return  cbor.encode(["Signature1", this.signedHeader, Buffer.from(''), this.payload])
+        // importnat the unsigned header field must be a empty buffer object
+        // Uint8Array yields the wrong Byte!!! by the cbor encoder!
+        // This might be a edge case (bug??) from the cbor lib as it works fine with signedHeader and payload UnitArrays
     }
 
     getPayloadAsJson(): any{

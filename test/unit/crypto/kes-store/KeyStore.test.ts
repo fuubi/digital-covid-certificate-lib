@@ -17,7 +17,7 @@ describe("Test the key store", ( ) => {
 
         const keyStore = new ChKeyStore()
         keyStore.loadKeys({jwt, verifySignature: false})
-        const key = keyStore.getKey("Ll3NP03zOxY=");
+        const key = await keyStore.getKey("Ll3NP03zOxY=");
         expect(key).toBeDefined()
         }
     )}
