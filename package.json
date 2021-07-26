@@ -4,6 +4,7 @@
   "description": "A library to parse and verify Digital Covid Certificates (DCC)",
   "keywords": [
     "DCC",
+    "EUDCC",
     "covid",
     "cert-validation"
   ],
@@ -14,11 +15,11 @@
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "repository": "git@github.com:cn-uofbasel/digital-covid-certificate-lib.git",
+  "repository": "git@github.com:fuubi/digital-covid-certificate-lib.git",
   "bugs": {
-    "url": "https://github.com/cn-uofbasel/digital-covid-certificate-lib/issues"
+    "url": "https://github.com/fuubi/digital-covid-certificate-lib.git/issues"
   },
-  "homepage": "https://github.com/cn-uofbasel/digital-covid-certificate-lib#readme",
+  "homepage": "https://github.com/fuubi/digital-covid-certificate-lib.git#readme",
   "files": [
     "config",
     "dist"
