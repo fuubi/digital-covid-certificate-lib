@@ -1,4 +1,4 @@
-import {DccBase45} from "../../../src/model/DccBase45";
+import {DccBase45} from "../../../src";
 
 describe("Test the base45", ( ) => {
     test("Return the type", () =>{

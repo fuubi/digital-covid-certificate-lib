@@ -1,4 +1,6 @@
-import {EudccHcert, DccCose, DccHcertFactory, VaccinationCertificate, EudccCertificate} from "../model/DccBase45";
+import {DccCose} from "../model/DccCose";
+import {EudccCertificate} from "../model/eudcc-hcert/EudccFields";
+import {DccHcertFactory} from "../model/eudcc-hcert/EudccHcertFactory";
 
 
 export class CoseDecoder {

@@ -1,5 +1,5 @@
 import pako from "pako"
-import {ZlibDecoder} from "../../../src/decoder/ZlibDecoder";
+import {ZlibDecoder} from "../../../src";
 
 describe("Test the zlib decoder (lib: pako)", ( ) => {
     test("Should decompress a compressed buffer", () =>{

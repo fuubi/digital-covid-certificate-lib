@@ -1,4 +1,4 @@
-import {DccCose} from "../model/DccBase45";
+import {DccCose} from "../model/DccCose";
 
 export class Verifier {
 
