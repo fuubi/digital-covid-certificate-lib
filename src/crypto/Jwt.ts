@@ -5,6 +5,8 @@ export class Jwt {
     public payload: any
     public mac: ArrayBuffer
 
+    public signedContent: ArrayBuffer
+
     constructor(jwt: string) {
         const parts = jwt.split(".")
         if (parts.length !== 3) {
@@ -13,7 +15,9 @@ export class Jwt {
         this.header = JSON.parse(atob(parts[0]));
         this.payload = JSON.parse(atob(parts[1]));
         this.mac = Convert.FromBase64Url(parts[2]);
+        this.signedContent = Convert.FromBase64Url(parts[1])
     }
+
 }
 
 
