@@ -8,8 +8,8 @@ import {
     Jwt,
     Verifier,
     ZlibDecoder,
+    CH_KEYS_UPDATE_LIST_JWT
 } from "digital-covid-certificate-lib";
-import {CH_KEYS_UPDATE_LIST_JWT} from "digital-covid-certificate-lib/dist/data/ch-keys/updatelistJwt";
 
 async function onScanSuccess(decodedText, decodedResult) {
     let infoInnerHtml = ""

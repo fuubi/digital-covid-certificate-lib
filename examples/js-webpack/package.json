@@ -11,12 +11,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "digital-covid-certificate-lib": "^0.0.1",
+    "@peculiar/x509": "^1.3.2",
+    "digital-covid-certificate-lib": "^0.0.2",
     "html5-qrcode": "^2.0.11",
     "node-polyfill-webpack-plugin": "^1.1.4",
-    "webpack": "^5.44.0",
     "util": "^0.12.4",
-    "@peculiar/x509": "^1.3.2"
+    "webpack": "^5.44.0"
   },
   "devDependencies": {
     "http-server": "^0.12.3",
