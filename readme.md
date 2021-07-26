@@ -25,4 +25,3 @@ Currently, the library has only been tested with Swiss certificates.
 ## Examples
 In the folder [examples]() there are two sample projects on how to quickly get started in a JavaScript 
  and a TypeScript environment.
-

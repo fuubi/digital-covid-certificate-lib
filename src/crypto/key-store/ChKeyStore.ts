@@ -1,6 +1,7 @@
 import {Jwt} from "../Jwt";
 import {Convert} from "pvtsutils";
 import {X509Certificate} from "@peculiar/x509";
+import {IKeyStore} from "./IKeyStore";
 
 export type ChKeyStoreIdentifier = string
 export type ChKeyStoreLoadingArgs = {

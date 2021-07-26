@@ -1,6 +1,6 @@
-import {ChKeyStore} from "../../../../src/crypto/key-store/ChKeyStore";
-import {Jwt} from "../../../../src/crypto/Jwt";
-import {CH_ROOT_CERTIFICATE} from "../../../../src/data/ch-keys/ch-root-certificate";
+import {ChKeyStore} from "../../../../src";
+import {Jwt} from "../../../../src";
+import {CH_ROOT_CERTIFICATE} from "../../../../src";
 import {X509Certificate} from "@peculiar/x509";
 
 describe("Test the key store", ( ) => {

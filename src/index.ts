@@ -1,6 +1,6 @@
 // Crypto
-export * from './crypto/key-store/ChKeyStore'
 export * from './crypto/key-store/IKeyStore'
+export * from './crypto/key-store/ChKeyStore'
 export * from './crypto/Jwt'
 export * from './crypto/Verifier'
 

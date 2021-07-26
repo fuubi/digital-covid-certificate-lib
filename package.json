@@ -27,7 +27,7 @@
   "scripts": {
     "build": "npm run build:ts",
     "build:ts": "tsc",
-    "docs": "typedoc",
+    "docs": "typedoc src/index.ts",
     "prepare": "npm run build",
     "test:unit": "jest --config=./jest.coverage.config.js test/unit",
     "test:watch": "jest --coverageReporters none --watch test/unit"
