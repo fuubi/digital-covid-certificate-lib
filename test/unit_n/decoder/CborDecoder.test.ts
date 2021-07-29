@@ -26,7 +26,7 @@ describe("Test the cbor decoder lib cbor-web", ( ) => {
         expect(jsonPayload).toStrictEqual({test: "ok"})
 
         const jsonSignedHeader = dccCose.getSignedHeaderAsJson()
-        expect(jsonSignedHeader).toStrictEqual({kid: "Ll3NP03zOxY="})
+        expect(jsonSignedHeader).toStrictEqual({kid: "Ll3NP03zOxY=", kty: "PS256"})
 
     })
 })

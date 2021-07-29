@@ -1,5 +1,6 @@
 import * as cbor from "cbor-web";
 import {Convert} from "pvtsutils";
+import {COSE_ALGORITHMS} from "../data/CoseKty";
 
 export class DccCose {
     public signedHeader: CoseSignedHeader;
@@ -7,7 +8,9 @@ export class DccCose {
     public payload: CosePayload;
     public signature: CoseSignature;
     private payloadAsJson: any;
-    private signedHeaderAsJson: {kid?: string} = {};
+    private signedHeaderAsJson: {
+        kty?: string;
+        kid?: string} = {};
 
     constructor(private readonly cose: Cose) {
         this.signedHeader   = cose.value[CoseKeys.CoseSignedHeader]
@@ -35,10 +38,19 @@ export class DccCose {
 
     private decodeHeader(){
         // https://www.iana.org/assignments/cose/cose.xhtml#header-parameters
-        const headerKeys = {kid: 4}
+        const headerKeys = {kid: 4, kty: 1}
         const header = cbor.decode(this.signedHeader)
         if(header.get(headerKeys.kid)){
             this.signedHeaderAsJson.kid = Convert.ToBase64(header.get(headerKeys.kid))
+        }
+        if(header.get(headerKeys.kty)){
+            const kty = COSE_ALGORITHMS[header.get(headerKeys.kty)]
+            if(kty){
+                this.signedHeaderAsJson.kty = kty
+            }else {
+                this.signedHeaderAsJson.kty = header.get(headerKeys.kty)
+            }
+
         }
     }
 }
