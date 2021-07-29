@@ -1,4 +1,5 @@
 import * as cbor from "cbor-web";
+import {Convert} from "pvtsutils";
 
 export class DccCose {
     public signedHeader: CoseSignedHeader;
@@ -6,6 +7,7 @@ export class DccCose {
     public payload: CosePayload;
     public signature: CoseSignature;
     private payloadAsJson: any;
+    private signedHeaderAsJson: {kid?: string} = {};
 
     constructor(private readonly cose: Cose) {
         this.signedHeader   = cose.value[CoseKeys.CoseSignedHeader]
@@ -13,6 +15,7 @@ export class DccCose {
         this.payload        = cose.value[CoseKeys.CosePayload]
         this.signature      = cose.value[CoseKeys.CoseSignature]
         this.payloadAsJson  = cbor.decode(this.payload)
+        this.decodeHeader()
     }
 
     getContentToSign(){
@@ -24,6 +27,19 @@ export class DccCose {
 
     getPayloadAsJson(): any{
         return this.payloadAsJson
+    }
+
+    getSignedHeaderAsJson(): any{
+        return this.signedHeaderAsJson;
+    }
+
+    private decodeHeader(){
+        // https://www.iana.org/assignments/cose/cose.xhtml#header-parameters
+        const headerKeys = {kid: 4}
+        const header = cbor.decode(this.signedHeader)
+        if(header.get(headerKeys.kid)){
+            this.signedHeaderAsJson.kid = Convert.ToBase64(header.get(headerKeys.kid))
+        }
     }
 }
 
