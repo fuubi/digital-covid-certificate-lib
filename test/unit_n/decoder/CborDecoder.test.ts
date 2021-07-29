@@ -1,18 +1,19 @@
 import * as cbor from "cbor-web";
 import {CborDecoder} from "../../../src";
-import {Cose} from "../../../src/model/DccCose";
+import {Cose} from "../../../src";
+
 
 describe("Test the cbor decoder lib cbor-web", ( ) => {
     test("Should decode the cbor buffer to an cose object", () =>{
 
-        return
+        const dummyHeader = Buffer.from([ 162, 1, 56, 36, 4, 72, 46, 93, 205, 63, 77, 243, 59, 22])
         //  TypeError: The "chunk" argument must be one of type string, Buffer, or Uint8Array. Received type object
         // ok in node test env:
         // todo add a jest conf for test which should run in node env
         // or fix the type error for jsdom
         const dummyCose: Cose = {
             tag: -18,
-            value: [Buffer.from([1, 2, 3]), Buffer.from(""), cbor.encodeOne({test: "ok"}, {canonical: true} ), Buffer.from([12,13])]
+            value: [dummyHeader, Buffer.from(""), cbor.encodeOne({test: "ok"}, {canonical: true} ), Buffer.from([12,13])]
         }
         const encodedValue = cbor.encodeOne(dummyCose)
         const dccCose = CborDecoder.decode(encodedValue)
@@ -26,3 +27,4 @@ describe("Test the cbor decoder lib cbor-web", ( ) => {
 
     })
 })
+
