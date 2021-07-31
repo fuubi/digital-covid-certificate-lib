@@ -1,7 +1,7 @@
 # Digital Covid Certificate Lib (DccLib) JavaScript sample project
 
 This npm project is a straightforward JS starter project to help you set up and use the library.
-It is important to add the node.js `util` and `node-polyfill-webpack-plugin` as dependencies to the package.json. These dependencies are required because the DccLib source code uses some libraries that require node.js specific classes, i.e., the Buffer class.
+It is important to add the node.js `util` and `node-polyfill-webpack-plugin` as dependencies to the package.json. Because the DccLib source code uses some libraries that expect node.js specific classes, i.e., the Buffer class, to be defined.
 
 ```bash
 npm install
