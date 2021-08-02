@@ -5,7 +5,7 @@ import {X509Certificate} from "@peculiar/x509";
 
 describe("Test the key store", ( ) => {
     test("Should load the signing keys from a JWT (without signature verification)", async () =>{
-        const jwt: Jwt = {header: {}, signedContent: new ArrayBuffer(0), payload: {certs: [{
+        const jwt: Jwt = {raw: "",header: {}, toBeSigned: new ArrayBuffer(0), payload: {certs: [{
                     "keyId": "Ll3NP03zOxY=",
                     "use": "sig",
                     "alg": "RS256",
@@ -15,10 +15,10 @@ describe("Test the key store", ( ) => {
                     "crv": null,
                     "x": null,
                     "y": null
-                }]}, mac: new ArrayBuffer(256)};
+                }]}, signature: new ArrayBuffer(256)};
 
         const keyStore = new ChKeyStore()
-        keyStore.loadKeys({jwt, verifySignature: false})
+        await keyStore.loadKeys({jwt, verifySignature: false})
         const key = await keyStore.getKey("Ll3NP03zOxY=");
         expect(key).toBeDefined()
         }

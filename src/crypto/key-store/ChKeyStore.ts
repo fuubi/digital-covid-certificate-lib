@@ -29,7 +29,6 @@ export class ChKeyStore implements IKeyStore<ChKeyStoreLoadingArgs, ChKeyStoreId
     }
 
     getKey(keyId: ChKeyStoreIdentifier): Promise<CryptoKey>{
-        console.log(this.keys)
         const keyData =  this.keys.filter(key => key.keyId  === keyId).pop()
         return this.mapToCryptoKey(keyData);
     }
@@ -37,7 +36,7 @@ export class ChKeyStore implements IKeyStore<ChKeyStoreLoadingArgs, ChKeyStoreId
     async loadKeys(loadingArgs: ChKeyStoreLoadingArgs) {
         if (loadingArgs.verifySignature) {
             await this.verifyCertificateChain(loadingArgs)
-            // await this.verifyJwtSignature(loadingArgs) // todo fix validation - does not work yet
+            await this.verifyJwtSignature(loadingArgs)
         }
 
         this.keys = loadingArgs.jwt.payload.certs
@@ -74,24 +73,16 @@ export class ChKeyStore implements IKeyStore<ChKeyStoreLoadingArgs, ChKeyStoreId
     private async verifyJwtSignature(arg: ChKeyStoreLoadingArgs) {
         const {jwt} = arg;
         const certificate:  X509Certificate = jwt.header.x5c.map(cert => new X509Certificate(cert))[0]
-        const publicKey = await certificate.publicKey.rawData //ArrayBuffer of the signature
-        const contentToSing = jwt.signedContent
-        let algorithm = { name: "HMAC", hash: "SHA-256" };
-        const cryptoKey = await crypto.subtle.importKey(
-            "raw", // raw format of the key - should be Uint8Array
-            publicKey,
-            algorithm,
-            false, // export
-            ["verify"] // what this key can do
-        )
+        const public_key = await certificate.publicKey.export(crypto);
 
         const valid  = await crypto.subtle.verify(
-            algorithm,
-            cryptoKey, //from generateKey or importKey above
-            publicKey, //ArrayBuffer of the signature
-            contentToSing //ArrayBuffer of the data
+            public_key.algorithm,
+            public_key, //from generateKey or importKey above
+            jwt.signature, //ArrayBuffer of the signature
+            jwt.toBeSigned //ArrayBuffer of the data
         )
-
-    return valid
+        if(!valid){
+            throw new Error("Invalid JWT.")
+        }
     }
 }
