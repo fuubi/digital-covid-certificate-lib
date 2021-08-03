@@ -6,7 +6,7 @@ import {IKeyStore} from "./IKeyStore";
 export type ChKeyStoreIdentifier = string
 export type ChKeyStoreLoadingArgs = {
     jwt: Jwt, verifySignature: boolean
-    rootCertificate?: X509Certificate
+    rootCertificate?: string
 }
 
 export class ChKeyStore implements IKeyStore<ChKeyStoreLoadingArgs, ChKeyStoreIdentifier>{
@@ -18,7 +18,7 @@ export class ChKeyStore implements IKeyStore<ChKeyStoreLoadingArgs, ChKeyStoreId
         const {jwt, rootCertificate} = args;
         const trustChain:  X509Certificate[] = jwt.header.x5c.map(cert => new X509Certificate(cert))
         if(rootCertificate){
-            trustChain.push(rootCertificate)
+            trustChain.push(new X509Certificate(rootCertificate))
         }
         for (let i = 0; i < trustChain.length; i++) {
             const valid = await trustChain[i].verify({date: new Date(), publicKey: trustChain[i+1]})
