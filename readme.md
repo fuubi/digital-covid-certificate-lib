@@ -20,10 +20,10 @@ the University of Basel.
 ## List of all features:
 
 - decode the Eudcc 
-    - [Base45Decoder](./src/decoder/Base45Decoder.ts)
-    - [ZlibDecoder](./src/decoder/ZlibDecoder.ts)
-    - [CborDecoder](./src/decoder/CborDecoder.ts)
-    - [CoseDecoder](./src/decoder/CoseDecoder.ts)
+    - [Base45Decoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/src/decoder/Base45Decoder.ts)
+    - [ZlibDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/src/decoder/ZlibDecoder.ts)
+    - [CborDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/src/decoder/CborDecoder.ts)
+    - [CoseDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/src/decoder/CoseDecoder.ts)
 - dereference EU eHealthNetwork Digitial Covid Certificate [value sets](https://github.com/ehn-dcc-development/ehn-dcc-valuesets)
 - load and verify DCC Signing Keys from JSON Web Token (JWT)
 - verify x509 Certificate Trust Chain
@@ -33,7 +33,8 @@ the University of Basel.
 The following two examples show how to decode and verify the validity of the DCC.
 
 ### Example 1
-- Step wise decode DCC
+- Stepwise decode DCC
+- Access some sample properties from an Eudcc instance  
 - Load DCC keys from JWT
 - Verify DCC key JWT signature and certificate chain 
 - Verify the DCC 
@@ -57,6 +58,16 @@ const dccCbor = ZlibDecoder.decode(dccZlib);
 const dccCose = CborDecoder.decode(dccCbor)
 const eudcc   = CoseDecoder.decode(dccCose)
 
+console.log(eudcc.person.familyName)
+console.log(eudcc.person.dateOfBirth)
+
+if (eudcc instanceof VaccinationCertificate) {
+  console.log(eudcc.infromation.vaccinationCountry)
+} else if (eudcc instanceof TestCertificate) {
+  console.log(eudcc.infromation.testResult)
+} else if (eudcc instanceof RecoveryCertificate) {
+  console.log(eudcc.infromation.firstPositiveTestDate)
+}
 
 const keystore = new ChKeyStore()
 await keystore.loadKeys(
