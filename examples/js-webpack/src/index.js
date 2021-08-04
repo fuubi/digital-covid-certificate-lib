@@ -11,6 +11,8 @@ import {
     CH_KEYS_UPDATE_LIST_JWT, CH_ROOT_CERTIFICATE
 } from "digital-covid-certificate-lib";
 
+
+
 async function onScanSuccess(decodedText, decodedResult) {
     let infoInnerHtml = ""
     const infoEl = document.getElementById("info");
@@ -44,13 +46,14 @@ async function onScanSuccess(decodedText, decodedResult) {
         appendText("<p> 5. Decoded the cose object and logged the Eudcc object in the Browser Console.</p>")
 
 
-
+        const rootCertificate = document.getElementById("root-certificate").textContent
+        const jwt = new Jwt(document.getElementById("valid-signing-keys-jwt").textContent)
         const keystore = new ChKeyStore()
         await keystore.loadKeys(
             {
-                jwt: new Jwt(CH_KEYS_UPDATE_LIST_JWT),
+                jwt,
                 verifySignature: true,
-                rootCertificate: CH_ROOT_CERTIFICATE
+                rootCertificate
             }
         )
         appendText("<p> 6. Loaded Ch Key Store.</p>")
@@ -72,9 +75,11 @@ async function onScanSuccess(decodedText, decodedResult) {
         console.error(e)
     }
 
-
 }
 
 var html5QrcodeScanner = new Html5QrcodeScanner(
-    "reader", { fps: 10, qrbox: 250 });
+    "reader", { fps: 10 });
 html5QrcodeScanner.render(onScanSuccess);
+
+document.getElementById("root-certificate").textContent =  CH_ROOT_CERTIFICATE
+document.getElementById("valid-signing-keys-jwt").textContent =  CH_KEYS_UPDATE_LIST_JWT
