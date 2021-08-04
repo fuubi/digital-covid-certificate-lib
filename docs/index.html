@@ -61,8 +61,25 @@
 				<a href="#digital-covid-certificate-lib-dcclib" id="digital-covid-certificate-lib-dcclib" style="color: inherit; text-decoration: none;">
 					<h1>Digital Covid Certificate Lib (DccLib)</h1>
 				</a>
-				<p>The DccLib is a TypeScript library that decodes and verifies the European Digital Covid Certificate (Eudcc) in modern browsers.
-				Currently, the library has only been tested with Swiss certificates.</p>
+				<p>DccLib is a TypeScript library that decodes and verifies the European Digital Covid Certificate (Eudcc) in modern web
+					browsers. For now the library has only been tested with Swiss certificates. In theories other DCC&#39;s should also work as
+				long as they follow Eudcc specification, and the provided singing keys are valid.</p>
+				<p>This work is primarily intended for educational purposes. In fact, it was a project as part of an internal hackathon at
+				the University of Basel.</p>
+				<ul>
+					<li><a href="https://fuubi.github.io/digital-covid-certificate-lib/">TsDocs</a></li>
+					<li><a href="https://fuubi.github.io/digital-covid-certificate-lib/demo">Demo</a><ul>
+							<li>The demo is not very user-friendly... Sorry for that, but have a look at the console to interact directly with your certificate.</li>
+						</ul>
+					</li>
+					<li>Example Projects<ul>
+							<li><a href="https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/examples/js-webpack">js-webpack</a>
+							is a sample project using JavaScript and Webpack.</li>
+							<li><a href="https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/examples/ts-react">ts-react</a>
+							is a sample project using TypeScript and React.</li>
+						</ul>
+					</li>
+				</ul>
 				<a href="#list-of-all-features" id="list-of-all-features" style="color: inherit; text-decoration: none;">
 					<h2>List of all features:</h2>
 				</a>
@@ -75,23 +92,95 @@
 						</ul>
 					</li>
 					<li>dereference EU eHealthNetwork Digitial Covid Certificate <a href="https://github.com/ehn-dcc-development/ehn-dcc-valuesets">value sets</a></li>
-					<li>load DCC Signing Keys from JSON Web Token (JWT)</li>
+					<li>load and verify DCC Signing Keys from JSON Web Token (JWT)</li>
 					<li>verify x509 Certificate Trust Chain</li>
 					<li>verify DCC </li>
-				</ul>
-				<a href="#list-of-hopefully-upcoming-features" id="list-of-hopefully-upcoming-features" style="color: inherit; text-decoration: none;">
-					<h2>List of (hopefully) upcoming features:</h2>
-				</a>
-				<ul>
-					<li>generate a light Swiss Covid Certificate</li>
-					<li>get kid from Dcc</li>
-					<li>verify JWT signature</li>
 				</ul>
 				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
 					<h2>Examples</h2>
 				</a>
-				<p>In the folder <a href="./examples">examples</a> there are two sample projects on how to quickly get started in a JavaScript
-				and a TypeScript environment.</p>
+				<p>The following two examples show how to decode and verify the validity of the DCC.</p>
+				<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
+					<h3>Example 1</h3>
+				</a>
+				<ul>
+					<li>Step wise decode DCC</li>
+					<li>Load DCC keys from JWT</li>
+					<li>Verify DCC key JWT signature and certificate chain </li>
+					<li>Verify the DCC </li>
+				</ul>
+				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">Base45Decoder</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">CborDecoder</span><span style="color: #000000">, </span><span style="color: #001080">ChKeyStore</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">CoseDecoder</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">DccBase45</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">Jwt</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">Verifier</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">ZlibDecoder</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">CH_KEYS_UPDATE_LIST_JWT</span><span style="color: #000000">, </span><span style="color: #001080">CH_ROOT_CERTIFICATE</span>
+<span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;digital-covid-certificate-lib&quot;</span><span style="color: #000000">;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">validVaccinationCert</span><span style="color: #000000"> = </span><span style="color: #A31515">&quot;HC1:NCFK60DG0/3WUWGSLKH47GO0Y%5S.PK%96L79CK-500XK0JCV496F3PYJ-982F3:OR2B8Y50.FK6ZK7:EDOLOPCO8F6%E3.DA%EOPC1G72A6YM86G7/F6/G80X6H%6946746T%6C46/96SF60R6FN8UPC0JCZ69FVCPD0LVC6JD846Y96C463W5307+EDG8F3I80/D6$CBECSUER:C2$NS346$C2%E9VC- CSUE145GB8JA5B$D% D3IA4W5646646-96:96.JCP9EJY8L/5M/5546.96SF63KC.SC4KCD3DX47B46IL6646H*6Z/ER2DD46JH8946JPCT3E5JDLA7$Q69464W51S6..DX%DZJC2/DYOA$$E5$C JC3/D9Z95LEZED1ECW.C8WE2OA3ZAGY8MPCG/DU2DRB8MTA8+9$PC5$CUZC$$5Y$5FBB*10GBH A81QK UV-$SOGD1APAB4$5UV C-EWB4T*6H%QV/DAP9L7J3Y4O/WVI5IW3672HO-HV16IW3JHV-FI%WJCPBI8QTE008I+FPR01MYFA6EBN2SR3H+4KH1M9RCIM2 VV15REG 516N93SS70RBUCH-RJM2JMULZ6*/HBBW7W7:S2BU7T6PRTMF4ALUNEXH3P7 LE0YF0TGE461PBK9TD68HDIT4AIFD9NH14V%GBCONJOV$KN  C+3U-IT$SE-A2V+9UO9WYRJ4HN+M/Z5W$QEDT/8C:88OQ4DXOBBIQ453863NPW0EJXG8$GH1T 38C*UI6T /FCDC%6VLNOA6W6BEYJJUH2Z-SOJO1D7JMALD8 $1%5B.GH$7AQOHZ:K3BNO1&quot;</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dccBase45</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">DccBase45</span><span style="color: #000000">(</span><span style="color: #001080">validVaccinationCert</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dccZlib</span><span style="color: #000000"> = </span><span style="color: #001080">Base45Decoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">dccBase45</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dccCbor</span><span style="color: #000000"> = </span><span style="color: #001080">ZlibDecoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">dccZlib</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dccCose</span><span style="color: #000000"> = </span><span style="color: #001080">CborDecoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">dccCbor</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">eudcc</span><span style="color: #000000">   = </span><span style="color: #001080">CoseDecoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">dccCose</span><span style="color: #000000">)</span>
+
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">keystore</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">ChKeyStore</span><span style="color: #000000">()</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">keystore</span><span style="color: #000000">.</span><span style="color: #795E26">loadKeys</span><span style="color: #000000">(</span>
+<span style="color: #000000">          {</span>
+<span style="color: #000000">            </span><span style="color: #001080">jwt:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Jwt</span><span style="color: #000000">(</span><span style="color: #0070C1">CH_KEYS_UPDATE_LIST_JWT</span><span style="color: #000000">),</span>
+<span style="color: #000000">            </span><span style="color: #001080">verifySignature:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #001080">rootCertificate:</span><span style="color: #000000"> </span><span style="color: #0070C1">CH_ROOT_CERTIFICATE</span>
+<span style="color: #000000">          }</span>
+<span style="color: #000000">  )</span>
+
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">kId</span><span style="color: #000000"> = </span><span style="color: #001080">dccCose</span><span style="color: #000000">.</span><span style="color: #795E26">getSignedHeaderAsJson</span><span style="color: #000000">().</span><span style="color: #001080">kid</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">publicKey</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">keystore</span><span style="color: #000000">.</span><span style="color: #795E26">getKey</span><span style="color: #000000">(</span><span style="color: #001080">kId</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">valid</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">Verifier</span><span style="color: #000000">.</span><span style="color: #795E26">verify</span><span style="color: #000000">(</span><span style="color: #001080">publicKey</span><span style="color: #000000">,</span>
+<span style="color: #000000">          {</span>
+<span style="color: #000000">            </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;RSA-PSS&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">            </span><span style="color: #001080">saltLength:</span><span style="color: #000000"> </span><span style="color: #098658">32</span><span style="color: #000000">, </span>
+<span style="color: #000000">          },</span>
+<span style="color: #000000">          </span><span style="color: #001080">dccCose</span>
+<span style="color: #000000">  )</span>
+</code></pre>
+				<a href="#example-2" id="example-2" style="color: inherit; text-decoration: none;">
+					<h3>Example 2</h3>
+				</a>
+				<ul>
+					<li>Create a chain decoder</li>
+					<li>Load DCC keys from JWT</li>
+					<li>Verify the DCC</li>
+				</ul>
+				<pre><code class="language-typescript"><span style="color: #008000">// same imports as for example 1</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">validVaccinationCert</span><span style="color: #000000"> = </span><span style="color: #A31515">&quot;HC1:NCFK60DG0/3WUWGSLKH47GO0Y%5S.PK%96L79CK-500XK0JCV496F3PYJ-982F3:OR2B8Y50.FK6ZK7:EDOLOPCO8F6%E3.DA%EOPC1G72A6YM86G7/F6/G80X6H%6946746T%6C46/96SF60R6FN8UPC0JCZ69FVCPD0LVC6JD846Y96C463W5307+EDG8F3I80/D6$CBECSUER:C2$NS346$C2%E9VC- CSUE145GB8JA5B$D% D3IA4W5646646-96:96.JCP9EJY8L/5M/5546.96SF63KC.SC4KCD3DX47B46IL6646H*6Z/ER2DD46JH8946JPCT3E5JDLA7$Q69464W51S6..DX%DZJC2/DYOA$$E5$C JC3/D9Z95LEZED1ECW.C8WE2OA3ZAGY8MPCG/DU2DRB8MTA8+9$PC5$CUZC$$5Y$5FBB*10GBH A81QK UV-$SOGD1APAB4$5UV C-EWB4T*6H%QV/DAP9L7J3Y4O/WVI5IW3672HO-HV16IW3JHV-FI%WJCPBI8QTE008I+FPR01MYFA6EBN2SR3H+4KH1M9RCIM2 VV15REG 516N93SS70RBUCH-RJM2JMULZ6*/HBBW7W7:S2BU7T6PRTMF4ALUNEXH3P7 LE0YF0TGE461PBK9TD68HDIT4AIFD9NH14V%GBCONJOV$KN  C+3U-IT$SE-A2V+9UO9WYRJ4HN+M/Z5W$QEDT/8C:88OQ4DXOBBIQ453863NPW0EJXG8$GH1T 38C*UI6T /FCDC%6VLNOA6W6BEYJJUH2Z-SOJO1D7JMALD8 $1%5B.GH$7AQOHZ:K3BNO1&quot;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">coseChainDecoder</span><span style="color: #000000"> = (</span><span style="color: #001080">cert</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">CborDecoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">ZlibDecoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">Base45Decoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">DccBase45</span><span style="color: #000000">(</span><span style="color: #001080">cert</span><span style="color: #000000">))))</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dccCose</span><span style="color: #000000"> = </span><span style="color: #795E26">coseChainDecoder</span><span style="color: #000000">(</span><span style="color: #001080">validVaccinationCert</span><span style="color: #000000">)</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">keystore</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">ChKeyStore</span><span style="color: #000000">()</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">keystore</span><span style="color: #000000">.</span><span style="color: #795E26">loadKeys</span><span style="color: #000000">(</span>
+<span style="color: #000000">        {</span>
+<span style="color: #000000">          </span><span style="color: #001080">jwt:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Jwt</span><span style="color: #000000">(</span><span style="color: #0070C1">CH_KEYS_UPDATE_LIST_JWT</span><span style="color: #000000">),</span>
+<span style="color: #000000">          </span><span style="color: #001080">verifySignature:</span><span style="color: #000000"> </span><span style="color: #0000FF">false</span><span style="color: #000000">,</span>
+<span style="color: #000000">        }</span>
+<span style="color: #000000">)</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">kId</span><span style="color: #000000"> = </span><span style="color: #001080">dccCose</span><span style="color: #000000">.</span><span style="color: #795E26">getSignedHeaderAsJson</span><span style="color: #000000">().</span><span style="color: #001080">kid</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">publicKey</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">keystore</span><span style="color: #000000">.</span><span style="color: #795E26">getKey</span><span style="color: #000000">(</span><span style="color: #001080">kId</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">valid</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">Verifier</span><span style="color: #000000">.</span><span style="color: #795E26">verify</span><span style="color: #000000">(</span><span style="color: #001080">publicKey</span><span style="color: #000000">,</span>
+<span style="color: #000000">        {</span>
+<span style="color: #000000">          </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;RSA-PSS&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">          </span><span style="color: #001080">saltLength:</span><span style="color: #000000"> </span><span style="color: #098658">32</span><span style="color: #000000">,</span>
+<span style="color: #000000">        },</span>
+<span style="color: #000000">        </span><span style="color: #001080">dccCose</span>
+<span style="color: #000000">)</span>
+</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
