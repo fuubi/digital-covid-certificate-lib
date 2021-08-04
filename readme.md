@@ -20,10 +20,10 @@ the University of Basel.
 ## List of all features:
 
 - decode the Eudcc 
-    - [Base45Decoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/src/decoder/Base45Decoder.ts)
-    - [ZlibDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/src/decoder/ZlibDecoder.ts)
-    - [CborDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/src/decoder/CborDecoder.ts)
-    - [CoseDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/src/decoder/CoseDecoder.ts)
+    - [Base45Decoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/Base45Decoder.ts)
+    - [ZlibDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/ZlibDecoder.ts)
+    - [CborDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/CborDecoder.ts)
+    - [CoseDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/CoseDecoder.ts)
 - dereference EU eHealthNetwork Digitial Covid Certificate [value sets](https://github.com/ehn-dcc-development/ehn-dcc-valuesets)
 - load and verify DCC Signing Keys from JSON Web Token (JWT)
 - verify x509 Certificate Trust Chain
