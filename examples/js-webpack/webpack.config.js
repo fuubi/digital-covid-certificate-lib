@@ -1,4 +1,5 @@
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     mode: "development",
@@ -11,6 +12,12 @@ module.exports = {
         }
     },
     plugins: [
-        new NodePolyfillPlugin()
+        new NodePolyfillPlugin(),
+        new CopyWebpackPlugin({
+            patterns: [{
+                from: require.resolve('./node_modules/html5-qrcode/dist/html5-qrcode.min.js'),
+                to: 'html5-qrcode.min.css'
+            }]
+        })
     ]
 };
