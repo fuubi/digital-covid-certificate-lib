@@ -1,6 +1,6 @@
 {
   "name": "digital-covid-certificate-lib",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A library to parse and verify Digital Covid Certificates (DCC)",
   "keywords": [
     "DCC",
