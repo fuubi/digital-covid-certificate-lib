@@ -8,7 +8,7 @@ import {
     Jwt,
     Verifier,
     ZlibDecoder,
-    CH_KEYS_UPDATE_LIST_JWT
+    CH_KEYS_UPDATE_LIST_JWT, CH_ROOT_CERTIFICATE
 } from "digital-covid-certificate-lib";
 
 async function onScanSuccess(decodedText, decodedResult) {
@@ -49,13 +49,15 @@ async function onScanSuccess(decodedText, decodedResult) {
         await keystore.loadKeys(
             {
                 jwt: new Jwt(CH_KEYS_UPDATE_LIST_JWT),
-                verifySignature: false
+                verifySignature: true,
+                rootCertificate: CH_ROOT_CERTIFICATE
             }
         )
         appendText("<p> 6. Loaded Ch Key Store.</p>")
         console.log(keystore)
 
-        const publicKey = await keystore.getKey("Ll3NP03zOxY=")
+        const kId = dccCose.getSignedHeaderAsJson().kid
+        const publicKey = await keystore.getKey(kId)
         const valid = await Verifier.verify(publicKey,
             {
                 name: "RSA-PSS",
