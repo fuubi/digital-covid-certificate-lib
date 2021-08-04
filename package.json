@@ -29,6 +29,7 @@
     "build:ts": "tsc",
     "docs": "typedoc src/index.ts",
     "prepare": "npm run build",
+    "gh-pages": "bash scripts/build-gh-pages.sh",
     "test:unit": "npm run test:unit:jsdom && npm run test:unit:node",
     "test:unit:node": "jest --config=./jest.config.node.js test/unit_n",
     "test:unit:jsdom": "jest --config=./jest.config.js test/unit",

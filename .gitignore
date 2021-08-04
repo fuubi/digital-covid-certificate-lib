@@ -1,5 +1,5 @@
 .eslintcache
-dist
+/dist/
 node_modules
 .idea
 coverage
