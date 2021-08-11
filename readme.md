@@ -1,43 +1,44 @@
 # Digital Covid Certificate Lib (DccLib)
 
 DccLib is a TypeScript library that decodes and verifies the European Digital Covid Certificate (Eudcc) in modern web
-browsers. For now the library has only been tested with Swiss certificates. In theories other DCC's should also work as
-long as they follow Eudcc specification, and the provided singing keys are valid.
+browsers. For now, the library has only been tested in Firefox with the Swiss Covid Certificate. In theory, the library
+should also be compatible with DCCs from other countries as long as they follow the [Eudcc specification] and the provided
+singing keys are valid.
 
-This work is primarily intended for educational purposes. In fact, it was a project as part of an internal hackathon at
+This work is primarily intended for educational purposes. In fact, the project was part of an internal hackathon at
 the University of Basel.
 
-- [TsDocs](https://fuubi.github.io/digital-covid-certificate-lib/)
-- [Demo](https://fuubi.github.io/digital-covid-certificate-lib/demo)
-    - The demo is not very user-friendly... Sorry for that, but have a look at the console to interact directly with your certificate.
+- [TsDocs]
+- [Demo]
+  - The demo is not very user-friendly... Sorry for that, but have a look at the console to interact directly with your
+    certificate.
 - Example Projects
-  - [js-webpack](https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/examples/js-webpack)
-    is a sample project using JavaScript and Webpack.
-  - [ts-react](https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/examples/ts-react) 
-    is a sample project using TypeScript and React.
-    
-    
+  - [js-webpack] is a sample project using JavaScript and Webpack.
+  - [ts-react]  is a sample project using TypeScript and React.
+
 ## List of all features:
 
-- decode the Eudcc 
-    - [Base45Decoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/Base45Decoder.ts)
-    - [ZlibDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/ZlibDecoder.ts)
-    - [CborDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/CborDecoder.ts)
-    - [CoseDecoder](https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/CoseDecoder.ts)
-- dereference EU eHealthNetwork Digitial Covid Certificate [value sets](https://github.com/ehn-dcc-development/ehn-dcc-valuesets)
-- load and verify DCC Signing Keys from JSON Web Token (JWT)
-- verify x509 Certificate Trust Chain
-- verify DCC 
+- decode the Eudcc
+  - [Base45Decoder]
+  - [ZlibDecoder]
+  - [CborDecoder]
+  - [CoseDecoder]
+- dereference the EU eHealthNetwork Digitial Covid Certificate [value sets]
+- load and verify the DCC Signing Keys from a JSON Web Token (JWT)
+- verify a x509 Certificate Trust Chain
+- verify a DCC
 
 ## Examples
-The following two examples show how to decode and verify the validity of the DCC.
+
+The following two examples show how to decode and verify the validity of a DCC.
 
 ### Example 1
-- Stepwise decode DCC
-- Access some sample properties from an Eudcc instance  
-- Load DCC keys from JWT
-- Verify DCC key JWT signature and certificate chain 
-- Verify the DCC 
+
+- Stepwise decode a DCC
+- Access some sample properties from a Eudcc instance
+- Load the DCC keys from a JWT
+- Verify the DCC key JWT signature and the certificate chain
+- Verify the DCC
 
 ```typescript
 import {
@@ -56,7 +57,7 @@ const dccBase45 = new DccBase45(validVaccinationCert)
 const dccZlib = Base45Decoder.decode(dccBase45)
 const dccCbor = ZlibDecoder.decode(dccZlib);
 const dccCose = CborDecoder.decode(dccCbor)
-const eudcc   = CoseDecoder.decode(dccCose)
+const eudcc = CoseDecoder.decode(dccCose)
 
 console.log(eudcc.person.familyName)
 console.log(eudcc.person.dateOfBirth)
@@ -71,28 +72,29 @@ if (eudcc instanceof VaccinationCertificate) {
 
 const keystore = new ChKeyStore()
 await keystore.loadKeys(
-          {
-            jwt: new Jwt(CH_KEYS_UPDATE_LIST_JWT),
-            verifySignature: true,
-            rootCertificate: CH_ROOT_CERTIFICATE
-          }
-  )
+        {
+          jwt: new Jwt(CH_KEYS_UPDATE_LIST_JWT),
+          verifySignature: true,
+          rootCertificate: CH_ROOT_CERTIFICATE
+        }
+)
 
 
 const kId = dccCose.getSignedHeaderAsJson().kid
 const publicKey = await keystore.getKey(kId)
 const valid = await Verifier.verify(publicKey,
-          {
-            name: "RSA-PSS",
-            saltLength: 32, 
-          },
-          dccCose
-  )
+        {
+          name: "RSA-PSS",
+          saltLength: 32,
+        },
+        dccCose
+)
 ```
 
 ### Example 2
+
 - Create a chain decoder
-- Load DCC keys from JWT
+- Load the DCC keys from JWT
 - Verify the DCC
 
 ```typescript
@@ -121,3 +123,23 @@ const valid = await Verifier.verify(publicKey,
         dccCose
 )
 ```
+
+[TsDocs]: https://fuubi.github.io/digital-covid-certificate-lib/
+
+[Demo]: https://fuubi.github.io/digital-covid-certificate-lib/demo
+
+[jswebpack]: https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/examples/jswebpack
+
+[tsreact]: https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/examples/tsreact
+
+[Base45Decoder]: https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/src/decoder/Base45Decoder.ts
+
+[ZlibDecoder]: https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/src/decoder/ZlibDecoder.ts
+
+[CborDecoder]: https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/src/decoder/CborDecoder.ts
+
+[CoseDecoder]: https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/src/decoder/CoseDecoder.ts
+
+[valuesets]: https://github.com/ehndccdevelopment/ehndccvaluesets
+
+[Eudcc specification]: https://github.com/ehn-dcc-development/hcert-spec
