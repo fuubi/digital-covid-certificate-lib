@@ -62,21 +62,21 @@
 					<h1>Digital Covid Certificate Lib (DccLib)</h1>
 				</a>
 				<p>DccLib is a TypeScript library that decodes and verifies the European Digital Covid Certificate (Eudcc) in modern web
-					browsers. For now the library has only been tested with Swiss certificates. In theories other DCC&#39;s should also work as
-				long as they follow Eudcc specification, and the provided singing keys are valid.</p>
-				<p>This work is primarily intended for educational purposes. In fact, it was a project as part of an internal hackathon at
+					browsers. For now, the library has only been tested in Firefox with the Swiss Covid Certificate. In theory, the library
+					should also be compatible with DCCs from other countries as long as they follow the <a href="https://github.com/ehn-dcc-development/hcert-spec">Eudcc specification</a> and the provided
+				singing keys are valid.</p>
+				<p>This work is primarily intended for educational purposes. In fact, the project was part of an internal hackathon at
 				the University of Basel.</p>
 				<ul>
 					<li><a href="https://fuubi.github.io/digital-covid-certificate-lib/">TsDocs</a></li>
 					<li><a href="https://fuubi.github.io/digital-covid-certificate-lib/demo">Demo</a><ul>
-							<li>The demo is not very user-friendly... Sorry for that, but have a look at the console to interact directly with your certificate.</li>
+							<li>The demo is not very user-friendly... Sorry for that, but have a look at the console to interact directly with your
+							certificate.</li>
 						</ul>
 					</li>
 					<li>Example Projects<ul>
-							<li><a href="https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/examples/js-webpack">js-webpack</a>
-							is a sample project using JavaScript and Webpack.</li>
-							<li><a href="https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/examples/ts-react">ts-react</a>
-							is a sample project using TypeScript and React.</li>
+							<li><a href="https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/examples/jswebpack">jswebpack</a> is a sample project using JavaScript and Webpack.</li>
+							<li><a href="https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/examples/tsreact">tsreact</a>  is a sample project using TypeScript and React.</li>
 						</ul>
 					</li>
 				</ul>
@@ -84,31 +84,36 @@
 					<h2>List of all features:</h2>
 				</a>
 				<ul>
-					<li>decode the Eudcc <ul>
-							<li><a href="https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/Base45Decoder.ts">Base45Decoder</a></li>
-							<li><a href="https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/ZlibDecoder.ts">ZlibDecoder</a></li>
-							<li><a href="https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/CborDecoder.ts">CborDecoder</a></li>
-							<li><a href="https://github.com/FUUbi/digital-covid-certificate-lib/tree/main/src/decoder/CoseDecoder.ts">CoseDecoder</a></li>
+					<li>decode the Eudcc<ul>
+							<li><a href="https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/src/decoder/Base45Decoder.ts">Base45Decoder</a></li>
+							<li><a href="https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/src/decoder/ZlibDecoder.ts">ZlibDecoder</a></li>
+							<li><a href="https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/src/decoder/CborDecoder.ts">CborDecoder</a></li>
+							<li><a href="https://github.com/FUUbi/digitalcovidcertificatelib/tree/main/src/decoder/CoseDecoder.ts">CoseDecoder</a></li>
 						</ul>
 					</li>
-					<li>dereference EU eHealthNetwork Digitial Covid Certificate <a href="https://github.com/ehn-dcc-development/ehn-dcc-valuesets">value sets</a></li>
-					<li>load and verify DCC Signing Keys from JSON Web Token (JWT)</li>
-					<li>verify x509 Certificate Trust Chain</li>
-					<li>verify DCC </li>
+					<li>dereference the EU eHealthNetwork Digitial Covid Certificate [value sets]</li>
+					<li>load and verify the DCC Signing Keys from a JSON Web Token (JWT)</li>
+					<li>verify a x509 Certificate Trust Chain</li>
+					<li>verify a DCC</li>
 				</ul>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<pre><code><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000"> </span><span style="color: #001080">digital</span><span style="color: #000000">-</span><span style="color: #001080">covid</span><span style="color: #000000">-</span><span style="color: #001080">certificate</span><span style="color: #000000">-</span><span style="color: #001080">lib</span>
+</code></pre>
 				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
 					<h2>Examples</h2>
 				</a>
-				<p>The following two examples show how to decode and verify the validity of the DCC.</p>
+				<p>The following two examples show how to decode and verify the validity of a DCC.</p>
 				<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
 					<h3>Example 1</h3>
 				</a>
 				<ul>
-					<li>Stepwise decode DCC</li>
-					<li>Access some sample properties from an Eudcc instance  </li>
-					<li>Load DCC keys from JWT</li>
-					<li>Verify DCC key JWT signature and certificate chain </li>
-					<li>Verify the DCC </li>
+					<li>Stepwise decode a DCC</li>
+					<li>Access some sample properties from a Eudcc instance</li>
+					<li>Load the DCC keys from a JWT</li>
+					<li>Verify the DCC key JWT signature and the certificate chain</li>
+					<li>Verify the DCC</li>
 				</ul>
 				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> {</span>
 <span style="color: #000000">  </span><span style="color: #001080">Base45Decoder</span><span style="color: #000000">,</span>
@@ -126,7 +131,7 @@
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dccZlib</span><span style="color: #000000"> = </span><span style="color: #001080">Base45Decoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">dccBase45</span><span style="color: #000000">)</span>
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dccCbor</span><span style="color: #000000"> = </span><span style="color: #001080">ZlibDecoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">dccZlib</span><span style="color: #000000">);</span>
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dccCose</span><span style="color: #000000"> = </span><span style="color: #001080">CborDecoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">dccCbor</span><span style="color: #000000">)</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">eudcc</span><span style="color: #000000">   = </span><span style="color: #001080">CoseDecoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">dccCose</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">eudcc</span><span style="color: #000000"> = </span><span style="color: #001080">CoseDecoder</span><span style="color: #000000">.</span><span style="color: #795E26">decode</span><span style="color: #000000">(</span><span style="color: #001080">dccCose</span><span style="color: #000000">)</span>
 
 <span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">eudcc</span><span style="color: #000000">.</span><span style="color: #001080">person</span><span style="color: #000000">.</span><span style="color: #001080">familyName</span><span style="color: #000000">)</span>
 <span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">eudcc</span><span style="color: #000000">.</span><span style="color: #001080">person</span><span style="color: #000000">.</span><span style="color: #001080">dateOfBirth</span><span style="color: #000000">)</span>
@@ -141,30 +146,30 @@
 
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">keystore</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">ChKeyStore</span><span style="color: #000000">()</span>
 <span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">keystore</span><span style="color: #000000">.</span><span style="color: #795E26">loadKeys</span><span style="color: #000000">(</span>
-<span style="color: #000000">          {</span>
-<span style="color: #000000">            </span><span style="color: #001080">jwt:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Jwt</span><span style="color: #000000">(</span><span style="color: #0070C1">CH_KEYS_UPDATE_LIST_JWT</span><span style="color: #000000">),</span>
-<span style="color: #000000">            </span><span style="color: #001080">verifySignature:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
-<span style="color: #000000">            </span><span style="color: #001080">rootCertificate:</span><span style="color: #000000"> </span><span style="color: #0070C1">CH_ROOT_CERTIFICATE</span>
-<span style="color: #000000">          }</span>
-<span style="color: #000000">  )</span>
+<span style="color: #000000">        {</span>
+<span style="color: #000000">          </span><span style="color: #001080">jwt:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Jwt</span><span style="color: #000000">(</span><span style="color: #0070C1">CH_KEYS_UPDATE_LIST_JWT</span><span style="color: #000000">),</span>
+<span style="color: #000000">          </span><span style="color: #001080">verifySignature:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
+<span style="color: #000000">          </span><span style="color: #001080">rootCertificate:</span><span style="color: #000000"> </span><span style="color: #0070C1">CH_ROOT_CERTIFICATE</span>
+<span style="color: #000000">        }</span>
+<span style="color: #000000">)</span>
 
 
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">kId</span><span style="color: #000000"> = </span><span style="color: #001080">dccCose</span><span style="color: #000000">.</span><span style="color: #795E26">getSignedHeaderAsJson</span><span style="color: #000000">().</span><span style="color: #001080">kid</span>
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">publicKey</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">keystore</span><span style="color: #000000">.</span><span style="color: #795E26">getKey</span><span style="color: #000000">(</span><span style="color: #001080">kId</span><span style="color: #000000">)</span>
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">valid</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">Verifier</span><span style="color: #000000">.</span><span style="color: #795E26">verify</span><span style="color: #000000">(</span><span style="color: #001080">publicKey</span><span style="color: #000000">,</span>
-<span style="color: #000000">          {</span>
-<span style="color: #000000">            </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;RSA-PSS&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">            </span><span style="color: #001080">saltLength:</span><span style="color: #000000"> </span><span style="color: #098658">32</span><span style="color: #000000">, </span>
-<span style="color: #000000">          },</span>
-<span style="color: #000000">          </span><span style="color: #001080">dccCose</span>
-<span style="color: #000000">  )</span>
+<span style="color: #000000">        {</span>
+<span style="color: #000000">          </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;RSA-PSS&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">          </span><span style="color: #001080">saltLength:</span><span style="color: #000000"> </span><span style="color: #098658">32</span><span style="color: #000000">,</span>
+<span style="color: #000000">        },</span>
+<span style="color: #000000">        </span><span style="color: #001080">dccCose</span>
+<span style="color: #000000">)</span>
 </code></pre>
 				<a href="#example-2" id="example-2" style="color: inherit; text-decoration: none;">
 					<h3>Example 2</h3>
 				</a>
 				<ul>
 					<li>Create a chain decoder</li>
-					<li>Load DCC keys from JWT</li>
+					<li>Load the DCC keys from JWT</li>
 					<li>Verify the DCC</li>
 				</ul>
 				<pre><code class="language-typescript"><span style="color: #008000">// same imports as for example 1</span>
