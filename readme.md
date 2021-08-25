@@ -28,6 +28,12 @@ the University of Basel.
 - verify a x509 Certificate Trust Chain
 - verify a DCC
 
+## Installation
+
+```
+npm i digital-covid-certificate-lib
+```
+
 ## Examples
 
 The following two examples show how to decode and verify the validity of a DCC.
