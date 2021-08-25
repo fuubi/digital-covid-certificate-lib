@@ -10,3 +10,6 @@
         - .mac -> .signature
         - .signedContent -> .toBeSigned
 - ChKeyStore.ts validates the JWS while loading keys
+
+## v0.1.1
+- Update Readme
