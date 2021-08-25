@@ -13,8 +13,8 @@ the University of Basel.
   - The demo is not very user-friendly... Sorry for that, but have a look at the console to interact directly with your
     certificate.
 - Example Projects
-  - [js-webpack] is a sample project using JavaScript and Webpack.
-  - [ts-react]  is a sample project using TypeScript and React.
+  - [jswebpack] is a sample project using JavaScript and Webpack.
+  - [tsreact]  is a sample project using TypeScript and React.
 
 ## List of all features:
 
